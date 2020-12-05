@@ -38,9 +38,8 @@ public  class RootServiceImpl implements RootService {
     }
 
     @Override
-    public List<Projectmember> Pass_Detailed(int projectId) {
-        System.out.println("服务层"+rm.Pass_Detailed(projectId));
-        return rm.Pass_Detailed(projectId);
+    public List<Projectmember> getProjectMembers(int projectId) {
+        return rm.getProjectMembers(projectId);
     }
 
     @Override

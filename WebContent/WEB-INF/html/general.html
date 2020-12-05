@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="./assets/css/ace-ie.css"/>
     <![endif]-
     ->
-    <!-- ace settings handler -->
+    <! ace settings handler -->
     <script src="./assets/js/ace-extra.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lte IE 8]>
@@ -591,14 +591,13 @@
             tmp += item.isUsed? `<option value="${item.projectYear}" >${item.projectYear}</option>`:`<option style='color: #ff0000' value="${item.projectYear}" disabled>${item.projectYear}</option>`;
           });
           $(".projectYear").html(tmp);
-          $( "#projectYear2" ).val(result[0].projectYear)
         },
         error: function (result) {
         }
 
       });
       var TableInit = function () {
-        var oTableInit = new Object();
+          var oTableInit = new Object();
         //初始化Table
         oTableInit.Init = function () {
           $('#tb_departments').bootstrapTable({
@@ -671,20 +670,9 @@
                   }
                 }
               },{
-                title: '查看成员',
+                title: '成员管理',
                 formatter: function (value,row,index) {
                   return "<button data-toggle='modal' data-target='#view_Details_Modal' onclick='view_details(" + row.projectId + ")'><span class='glyphicon glyphicon-search'></span></button>"
-                }
-              }, {
-                field: "test",
-                title: "添加成员",
-                formatter: function (value, row, index) {
-                  console.log(row.projectId);
-                  if (row.status === "未审核"){
-                    return "<a data-toggle='modal'  data-target='#add_Member_Modal' onclick='add_project_member_page(" + row.projectId +")'><span class='glyphicon glyphicon-plus'></span></a>";
-                  } else{
-                    return "<a><span class='glyphicon glyphicon-remove' title='未审核，不可添加'></span></a>"
-                  }
                 }
               },
               {
@@ -712,14 +700,14 @@
         return oTableInit;
       };
 
-      var ButtonInit = function () {
-        var oInit = new Object();
-        var postdata = {};
-        oInit.Init = function () {
-          //初始化页面上面的按钮事件
-        };
-        return oInit;
-      };
+      // var ButtonInit = function () {
+      //   var oInit = new Object();
+      //   var postdata = {};
+      //   oInit.Init = function () {
+      //     //初始化页面上面的按钮事件
+      //   };
+      //   return oInit;
+      // };
 
       $(function () {
 
@@ -728,8 +716,8 @@
         oTable.Init();
 
         //2.初始化Button的点击事件
-        var oButtonInit = new ButtonInit();
-        oButtonInit.Init();
+        // var oButtonInit = new ButtonInit();
+        // oButtonInit.Init();
         $("#mes .projectYear").click(function () {
           //点击查询是 使用刷新 处理刷新参数
           $('#tb_departments').bootstrapTable('refresh');
@@ -758,11 +746,9 @@
         "jobDescription": jobDescription
       };
       console.log(tmp)
-      let jsonData = JSON.stringify(tmp);
-
-      if ($("#projectTitle").html().trim() == "添加绩效") {
-        //
-        $.ajax({
+      if (!projectId) {
+          let jsonData = JSON.stringify(tmp);
+          $.ajax({
           type: "post",
           data: jsonData,
           url: "teacher/Sub_Project",
@@ -775,7 +761,9 @@
           }
         });
       }else {
-        $.ajax({
+          tmp.projectId = projectId;
+          let jsonData = JSON.stringify(tmp);
+          $.ajax({
           type: "post",
           data: jsonData,
           url: "teacher/edit_Project",
@@ -802,7 +790,7 @@
         //初始化Table
         oTableInit.Init = function () {
           $('#tb_departments').bootstrapTable({
-            url: 'root/Pass',         //请求后台的URL（*）
+            url: 'root/Pass',         //请求后台的URL（*）/**/
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
@@ -1018,7 +1006,7 @@
       var jsonData = JSON.stringify(mes);
       $.ajax({
         type: "post",
-        url: "root/Pass_Detailed",
+        url: "root/projectMember",
         data: jsonData,
         dataType:"json",
         contentType: "application/json;charset=UTF-8",
@@ -1027,19 +1015,19 @@
           for (var i = 0; i< result.length;i++){
             $("input#check_member").after(
                 "<div class=\"form-group delete\" >\n" +
-                "                                <label for=\"projectYear\" class=\"col-sm-1  control-label\">教师ID:</label>\n" +
-                "                                <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].teacherId+
-                "                                </div>\n" +
-                "                                <label for=\"projectYear\" class=\"col-sm-2 col-sm-offset-1 control-label\">教师名:</label>\n" +
-                "                                <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].tName+
-                "                                </div>\n" +
-                "                                <label for=\"projectYear\" class=\"col-sm-1  control-label\">工作描述:</label>\n" +
-                "                                <div class=\"col-sm-5\" style='line-height: 34px'>\n" +result[i].explain+
-                "                                </div>\n" +
-                "                                <label for=\"projectYear\" class=\"col-sm-1  control-label\">权重:</label>\n" +
-                "                                <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].weight+
-                "                                </div>\n" +
-                "                            </div>"
+                "  <label for=\"projectYear\" class=\"col-sm-1  control-label\">教师ID:</label>\n" +
+                "  div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].teacherId+
+                "  </div>\n" +
+                " <label for=\"projectYear\" class=\"col-sm-2 col-sm-offset-1 control-label\">教师名:</label>\n" +
+                " <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].tName+
+                "</div>\n" +
+                " <label for=\"projectYear\" class=\"col-sm-1  control-label\">工作描述:</label>\n" +
+                "  <div class=\"col-sm-5\" style='line-height: 34px'>\n" +result[i].explain+
+                " </div>\n" +
+                "<label for=\"projectYear\" class=\"col-sm-1  control-label\">权重:</label>\n" +
+                "<div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].weight+
+                "</div>\n" +
+                "</div>"
             )
           }
         },
@@ -1210,7 +1198,7 @@
     function timeFormatter(value, row, index) {
         if (value != null) {
             var mes = new Date(value);
-            return mes.getFullYear().toString() + "-" + (mes.getMonth() + 1).toString() + "-" + mes.getDate().toString();
+            return mes.getFullYear() + "-" + (mes.getMonth() + 1) + "-" + mes.getDate();
         }
     }
     function time_transform(mes){
@@ -1293,6 +1281,7 @@
              "projectId":projectId
         };
         let jsonData = JSON.stringify(mes);
+        let _this = this;
         $.ajax({
             type: "post",
             url: "teacher/find_Project",
@@ -1300,7 +1289,8 @@
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
             success: function (result) {
-              form = result;
+                console.log(result);
+                _this.projectId = result.projectId;
                 // $("#projectId").val(result.projectId)
                 $("#name").val(result.name);
                 $("#projectYear").val(result.projectYear);
@@ -1316,12 +1306,13 @@
 
     }
 
-    //情况绩效表单
+    //清空绩效表单
     function resetForm(){
       $("#name").val("");
       $("#jobDescription").val("");
       $("#startTime").val("");
       $("#endTime").val("");
+      projectId = null;
     }
 
     //设置浏览器cookie

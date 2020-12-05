@@ -29,7 +29,7 @@
 	    	SELECT * FROM project where status='通过'
 	    </select>
 	<!--查询项目成员-->
-	<select id="Pass_Detailed" resultType="Projectmember" parameterType="int">
+	<select id="getProjectMembers" resultType="Projectmember" parameterType="int">
 	    	SELECT * FROM  teacher,projectmember WHERE projectmember.projectId=#{projectId} and projectmember.teacherId = teacher.tId
 	    </select>
     <!--查询未通过审核的项目 -->

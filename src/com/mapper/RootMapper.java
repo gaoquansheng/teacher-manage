@@ -10,7 +10,7 @@ public interface RootMapper {
     List<Teacher> Teacher();
     List <Project> Project();
     List <Project> Pass();
-    List <Projectmember>Pass_Detailed(int projectId);
+    List <Projectmember>getProjectMembers(int projectId);
     List <Project> Refuse();
     List <Projectrefuse> Refuse_Detailed(int projectId);
     void insert_Pass(Projectmember projectmember);

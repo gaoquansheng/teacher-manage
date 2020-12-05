@@ -79,12 +79,12 @@ public class RootController {
 
 
     @ResponseBody
-    @RequestMapping("/Pass_Detailed")
-    public String Pass_Detailed(@RequestBody Projectmember projectmember){
+    @RequestMapping("/projectMember")
+    public String getProjectMembers(@RequestBody Projectmember projectmember){
         int projectId=projectmember.getProjectId();
 
-        List <Projectmember> member=rs.Pass_Detailed(projectId);
-        return JSON.toJSONString(member).toString();
+        List <Projectmember> member=rs.getProjectMembers(projectId);
+        return JSON.toJSONString(member);
     }
 
 
@@ -92,7 +92,7 @@ public class RootController {
     @RequestMapping("/Refuse")
     public String Refuse(){
         List<Project> refuse=rs.Refuse();
-        return JSON.toJSONString(refuse).toString();
+        return JSON.toJSONString(refuse);
     }
 
 
@@ -117,7 +117,7 @@ public class RootController {
         }
         int projectId=project.getProjectId();
         int scoreall=project.getScore();
-        List<Projectmember> list=rs.Pass_Detailed(projectId);
+        List<Projectmember> list=rs.getProjectMembers(projectId);
         int numbre=list.size();
         System.out.println(numbre+"length");
         float sum=0;
