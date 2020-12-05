@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.mapper.NewsMapper">
+	
+		<!-- 添加新闻 -->
+		<insert id="add_news" parameterType="news"  >
+	         insert into news (news_title,news_content,news_date,news_author) values (#{news_title},#{news_content},#{news_date},#{news_author})
+	    </insert>
+	    <!--查看新闻-->
+		<select id="L_news" parameterType="String" resultType="news" >
+	    	SELECT * FROM news ORDER BY news_date DESC
+
+	    </select>
+	    <!--删除一条新闻 -->
+	    <delete id="delete_news" parameterType="String">
+		    delete from news where news_id = #{news_id}
+	    </delete>
+	    
+	    <!--查看一条新闻-->
+		<select id="find_news" parameterType="String" resultType="news" >
+	    	SELECT * FROM news where news_id=#{news_id}
+
+	    </select>
+	    
+
+	     <!--编辑新闻-->
+	     <update id="update_news" parameterType="news" >
+	    	update news set news_title=#{news_title},news_date=#{news_date},news_author=#{news_author},news_content=#{news_content} where news_id=#{news_id}
+	    </update>
+
+
+	</mapper>

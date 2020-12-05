@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.TeacherMapper">
+<!--       SELECT * FROM project INNER JOIN projectmember ON project.projectId=projectmember.projectId WhERE projectmember.teacherId=#{teacherId};-->
+
+    <!--查看自己参与的项目-->
+    <select id="t_Project" parameterType="Project" resultType="Project" >
+        SELECT * FROM project WhERE tId = #{tId} and projectYear = #{projectYear}
+
+          </select>
+	<!--查询项目成员-->
+	<select id="Pass_Detailed" resultType="Projectmember" parameterType="int">
+	    	select * from projectmember where projectId=#{projectId}
+	    </select>
+
+    <!--提交项目 -->
+    <insert id="sub_Project"  parameterType="Project"  useGeneratedKeys="true" keyProperty="projectId" >
+	         insert into project (tId,submitter,name,projectYear,jobDescription,startTime,endTime,createTime,itemId,itemName,status) values (#{tId},#{submitter},#{name},#{projectYear},#{jobDescription},#{startTime},#{endTime},#{createTime},#{itemId},#{itemName},'未审核')
+	    </insert>
+	<!-- 查询项目内容 -->
+	<select id="find_Project"  parameterType="Project" resultType="Project" >
+	    	SELECT * from project WHERE projectId=#{projectId};
+	    </select>
+	<!-- 更新项目内容 -->
+	<update id="edit_project"   parameterType="Project">
+	    	update project SET name=#{name}, projectYear=#{projectYear},itemName=#{itemName},jobDescription=#{jobDescription} ,startTime=#{startTime},endTime=#{endTime}, status = '未审核' WHERE projectId=#{projectId};
+	    </update>
+	<!--添加项目成员  -->
+	<insert id="sub_Projectmember"  parameterType="Projectmember">
+	         insert into projectmember (projectId,teacherId,weight,`explain`) values (#{projectId},#{teacherId},#{weight},#{explain})
+	</insert>
+	<!-- 查询所有的教师-->
+	<select id="allteacher" resultType="Teacher" >
+	    	SELECT * FROM teacher
+	    </select>
+	<!--查 看季度-->
+    <select id="currentYear"  resultType="Currentyear" >
+	    	SELECT * FROM currentYear
+	    </select>
+
+    <!--查 看指标-->
+    <select id="item"  resultType="Item" >
+	    	SELECT * FROM item
+	    </select>
+	<!-- 查询教师总分 -->
+	<select id="teacher_score" resultType="Projectmember" parameterType="String">
+	    	SELECT   SUM(score) as sumscore from projectmember where teacherId=#{teacherId} GROUP BY teacherId
+	    </select>
+
+	<!-- 查询教师个人信息 -->
+	<select id="find_teacher" resultType="Teacher" parameterType="String">
+	    	SELECT * from teacher WHERE tId=#{tId};
+	    </select>
+
+	<!-- 更新教师个人信息 -->
+	<update id="edit_teacher"   parameterType="Teacher">
+	    	update teacher SET aprt=#{aprt}, email=#{email} WHERE tId=#{tId};
+	    </update>
+
+	<update id="disable_teacher" parameterType="java.util.List">
+		<foreach collection="array" item="item" index="index" open="" close="" separator=";">
+			update teacher set enable = 0 where tId = #{item}
+		</foreach>
+	</update>
+
+	<select id="getProjectYear" resultType="CurrentYear">
+		select * from currentyear;
+	</select>
+</mapper>

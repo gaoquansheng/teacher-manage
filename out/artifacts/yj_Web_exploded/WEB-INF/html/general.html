@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<base href="/">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>应急管理部紧急救援促进中心个人信息报名系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta http-equiv="refresh" content="1800"/>
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="./assets/css/font-awesome.css"/>
+    <!-- text fonts -->
+    <link rel="stylesheet" href="./assets/css/ace-fonts.css"/>
+    <link rel="stylesheet" href="./assets/css/activities-serverload.css"/>
+    <link rel="stylesheet" href="./assets/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="./assets/css/bootstrap-datetimepicker.css"/>
+    <link rel="stylesheet" href="./assets/css/dropzone.css"/>
+    <!-- ace styles -->
+    <link rel="stylesheet" href="./assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="./assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="./assets/css/ace-ie.css"/>
+    <![endif]-->
+    <!-- ace settings handler -->
+    <script src="./assets/js/ace-extra.js"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="./assets/js/html5shiv.js"></script>
+    <script src="./assets/js/respond.js"></script>
+    <![endif]-->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='./assets/js/jquery.js'>" + "<" + "/script>");
+</script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='./assets/js/jquery1x.js'>" + "<" + "/script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement)
+        document.write("<script src='./assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+</script>
+    <script>
+  //读取cookie
+	function getCookie(name) {
+	    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+	
+	    if(arr=document.cookie.match(reg))
+	
+	        return unescape(arr[2]);
+	    else
+	        return null;
+	}
+  
+  //权限认证
+	 var idno = getCookie("user_idno");
+  	 console.log("idno"+idno);
+	 if (idno === "null"){
+		 alert("请重新登录");
+		 window.location.href = "index.html";
+	 }else{
+		 var mes = {
+			 		"user_idno":idno
+			 };
+			 var jsonData = JSON.stringify(mes);
+			 console.log(mes);
+			 $.ajax({
+			      type:"post",
+			      url: "find_us",
+			      data:jsonData,
+			      dataType:"json",
+			      contentType : "application/json;charset=UTF-8",
+			      success: function(result){  
+			    	  console.log(result);
+			    	  if(result["user_role"] == 1){
+			    		  window.location.href = "index.html";
+			    	  }
+			    	  if (result["user_avatar"] != null && result["user_avatar"] != ""){
+// 			    		  console.log(result["user_avatar"]);
+// 			    		  var photo_index = result["user_avatar"].indexOf("personal_photo");
+// 			    		  var photo_path = result["user_avatar"].substring(photo_index)
+// 			    		  console.log(photo_path);
+			    		  global_photo_src = result["user_avatar"];
+			    		  $("#user_photo").attr("src",result["user_avatar"]);
+			    	  }
+			    	  
+			      },
+			      error:function(result){
+			          console.log(result);
+			      }
+
+			 });
+	 }
+	 
+	 //显示照片
+	 
+    </script>
+</head>
+<body class="no-skin">
+
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('navbar', 'fixed')
+            } catch (e) {
+            }
+        </script>
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>应急管理部紧急救援促进中心
+                    </small>
+                </a>
+                <!-- /section:basics/navbar.layout.brand -->
+                <!-- #section:basics/navbar.toggle -->
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="./assets/avatars/user.jpg" id="user_photo" alt="Jason's Photo"/>
+                            <span class="user-info" style="margin-right: 20px">
+                                <small></small>
+                            </span >
+                            <input type="button" class="btn btn-sm btn-danger" value="注销" onclick="logout()">
+                        </a>
+                    </li>
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+            <!-- /section:basics/navbar.dropdown -->
+        </div>
+        <!-- /.navbar-container -->
+    </div>
+
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('main-container', 'fixed')
+            } catch (e) {
+            }
+        </script>
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar responsive">
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'fixed')
+                } catch (e) {
+                }
+            </script>
+
+            <!-- /.sidebar-shortcuts -->
+            <ul class="nav nav-list">
+                <!--导航栏首页开始-->
+                <li class="">
+                    <a href="index.html" target="_blank">
+                        <i class="menu-icon fa fa-desktop"></i>
+                        <span class="menu-text">首页</span>
+                        <!--<b class="arrow fa fa-angle-down"></b>-->
+                    </a>
+                    <b class="arrow"></b>
+                    <!--<ul class="submenu">-->
+                        <!--<li class="">-->
+                            <!--<a data-url="page/department" href="home#page/department">-->
+                                <!--<i class="menu-icon fa fa-caret-right"></i>部门管理-->
+                            <!--</a>-->
+                            <!--<b class="arrow"></b>-->
+                            <!--<ul class="submenu">-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                </li>
+                <!--导航栏首页结束-->
+                <!--修改密码开始-->
+                <li class="">
+                    <a href="#" class="dropdown-toggle" onclick="chang_pwd_page()">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+                        <span class="menu-text">修改密码</span>
+                        <!--<b class="arrow fa fa-angle-down"></b>-->
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <!--修改密码结束-->
+                <li class="">
+                    <a href="#" class="dropdown-toggle" onclick="view_mes()">
+                        <i class="menu-icon fa fa-anchor"></i>
+                        <span class="menu-text">查看个人信息</span>
+                        <!--<b class="arrow fa fa-angle-down"></b>-->
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+
+
+                <!--导航栏个人信息开始-->
+                <li class="">
+                    <a href="#" class="dropdown-toggle" >
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text">修改个人信息</span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="">
+                            <a data-url="page/information" href="javascript:;" onclick="change_info_page()">
+                                <i class="menu-icon fa fa-caret-right"></i>基本信息
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="submenu">
+                        <li class="">
+                            <a data-url="page/information" href="javascript:;" onclick="add_photo()">
+                                <i class="menu-icon fa fa-caret-right"></i>上传个人照片
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <ul class="submenu">
+                        <li class="">
+                            <a data-url="page/information" href="javascript:;" onclick="chang_edu_page()">
+                                <i class="menu-icon fa fa-caret-right"></i>教育经历
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="submenu">
+                        <li class="">
+                            <a data-url="page/information" href="javascript:;" onclick="change_work_page()">
+                                <i class="menu-icon fa fa-caret-right"></i>工作经历
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="submenu">
+                        <li class="">
+                            <a data-url="page/information" href="javascript:;" onclick="change_emergency()">
+                                <i class="menu-icon fa fa-caret-right"></i>紧急联系人
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="submenu">
+                        <li class="">
+                            <a data-url="page/information" href="javascript:;" onclick="change_certificate()">
+                                <i class="menu-icon fa fa-caret-right"></i>证书
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <a href="#" class="dropdown-toggle" onclick="manage_project_page()">
+                        <i class="menu-icon fa fa-anchor"></i>
+                        <span class="menu-text">项目管理</span>
+                        <!--<b class="arrow fa fa-angle-down"></b>-->
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+
+            </ul>
+            <!-- /.nav-list -->
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left"
+                   data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'collapsed')
+                } catch (e) {
+                }
+            </script>
+        </div>
+        <!-- /section:basics/sidebar -->
+        <div class="main-content row">
+            <div class="col-md-4 col-md-offset-4" id="mes" style="margin-top: 40px">
+                <h1>欢迎您</h1>
+            </div>
+        </div>
+
+        <!--底部-->
+        <!-- /.main-content -->
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content">
+                    <span class="bigger-120"><span class="blue bolder">应急管理部紧急救援促进中心</span>&copy;2019&emsp;&emsp;&emsp;&emsp;<span class="blue bolder">防灾科技学院应急管理学院技术支持</span></span>
+                </div>
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div>
+
+    <!-- /.main-container -->
+
+    <!--添加教育经历模态框-->
+    <form method="post" name="user" class="form-horizontal"  role="form"  style="margin: 20px;" >
+        <div class="modal fade" id="add_Edu_Modal"   tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="updateModalLabel">
+                            教育经历
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="form-horizontal" >
+                            <!--userid为隐藏的input，便于update时的传值-->
+                            <input type="text" id="userID" name="userID" hidden>
+                            <div class="form-group">
+                                <label for="university" class="col-sm-3 control-label">学校</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="university" name="university">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="education" class="col-sm-3 control-label">学历</label>
+                                <div class="col-sm-9">
+                                    <select  class="form-control" id="education" name="education" >
+                                        <option value="大专">大专</option>
+                                        <option value="本科" selected>本科</option>
+                                        <option value="研究生">研究生</option>
+                                        <option value="博士生">博士生</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="major" class="col-sm-3 control-label">专业</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="major" name="major" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="start_date" class="col-sm-3 control-label">入学时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control datetimepicker" id="start_date" name="start_date" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date" class="col-sm-3 control-label">毕业时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control datetimepicker" id="end_date" name="end_date" >
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                        所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_education()">提交</button>
+                        <span id="tip"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--添加工作经历模态框-->
+    <form method="post" name="user" class="form-horizontal" role="form" id="form-data"  style="margin: 20px;" >
+        <div class="modal fade" id="add_Work_Modal"   tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" >
+                            工作经历
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="form-horizontal">
+                            <!--userid为隐藏的input，便于update时的传值-->
+                            <input type="text" id="userID1" name="userID" hidden>
+                            <div class="form-group">
+                                <label for="work_org" class="col-sm-3 control-label">单位</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="work_org" name="university">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="work_duty" class="col-sm-3 control-label">职责</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="work_duty" name="university">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="work_start_date" class="col-sm-3 control-label">开始时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control datetimepicker" id="work_start_date" name="start_date" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="work_end_date" class="col-sm-3 control-label">结束时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control datetimepicker" id="work_end_date" name="end_date" >
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                        所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                        <button type="input" class="btn btn-primary" data-dismiss="modal"  onclick="add_work()">提交</button>
+                        <span id="work_tip"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--添加紧急联系人模态框-->
+    <form method="post" name="user" class="form-horizontal" role="form"   style="margin: 20px;" >
+        <div class="modal fade" id="add_Emergency_Modal"   tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" >
+                            紧急联系人
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="form-horizontal">
+                            <!--userid为隐藏的input，便于update时的传值-->
+                            <input type="text" id="userID2" name="userID" hidden>
+                            <div class="form-group">
+                                <label for="emergency_name" class="col-sm-3 control-label">姓名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="emergency_name" name="university">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_address" class="col-sm-3 control-label">通讯地址</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="emergency_address" name="university">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_tel" class="col-sm-3 control-label">电话</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="emergency_tel" name="university">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                        所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                        <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="add_emergency()">提交</button>
+                        <span id="emergency_tip"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--添加证书模态框-->
+    <form method="post" name="user" class="form-horizontal" id="add" enctype="multipart/form-data" role="form"   style="margin: 20px;"  >
+        <div class="modal fade" id="add_Certificate_Modal"   tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" >
+                            证书
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" id="certificate" class="form-horizontal" enctype="multipart/form-data">
+                            <!--userid为隐藏的input，便于update时的传值-->
+                            <input type="text" id="userID3" name="userID" hidden>
+                            <div class="form-group">
+                                <label for="certificate_name" class="col-sm-3 control-label">证书名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="certificate_name" name="certificate_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="certificate_no" class="col-sm-3 control-label">证书编号</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="certificate_no" name="certificate_no">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="certificate_org" class="col-sm-3 control-label">发证单位</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="certificate_org" name="certificate_org">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="certificate_enddate" class="col-sm-3 control-label">有效期</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control datetimepicker" id="certificate_enddate" name="certificate_enddate" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="certificate_photo_src" class="col-sm-3 control-label">证书照片</label>
+                                <div class="col-sm-9 ">
+                                    <input type="file" class="form-control" id="certificate_photo_src" name="certificate_photo_src" accept="image/*" >
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                        所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                        <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="add_certificate()">提交</button>
+                        <span id="certificate_tip"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--添加项目模态框-->
+    <form method="post" name="user" class="form-horizontal" role="form"   style="margin: 20px;" >
+        <div class="modal fade" id="add_Project_Modal"   tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" >
+                            添加项目
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="form-horizontal">
+                            <!--userid为隐藏的input，便于update时的传值-->
+                            <input type="text"  name="userID" hidden>
+                            <div class="form-group">
+                                <label for="emergency_name" class="col-sm-3 control-label">项目名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="name" name="name">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emergency_name" class="col-sm-3 control-label">项目描述</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="jobDescription" name="jobDescription"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_address" class="col-sm-3 control-label">季度</label>
+                                <div class="col-sm-9">
+                                    <select id="projectYear" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_address" class="col-sm-3 control-label">指标</label>
+                                <div class="col-sm-9">
+                                    <select id="itemName" class="form-control">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_tel" class="col-sm-3 control-label">开始时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control datetimepicker" id="startTime" name="startTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_tel" class="col-sm-3 control-label">结束时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control datetimepicker" id="endTime" name="endTime">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                        所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                        <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="add_project()">提交</button>
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+<script src="./assets/js/bootstrap.js"></script>
+<script src="./assets/js/dropzone.js"></script>
+<!-- ace scripts -->
+<script src="./assets/js/ace/elements.scroller.js"></script>
+<script src="./assets/js/ace/elements.colorpicker.js"></script>
+<script src="./assets/js/ace/elements.fileinput.js"></script>
+<script src="./assets/js/ace/elements.typeahead.js"></script>
+<script src="./assets/js/ace/elements.wysiwyg.js"></script>
+<script src="./assets/js/ace/elements.spinner.js"></script>
+<script src="./assets/js/ace/elements.treeview.js"></script>
+<script src="./assets/js/ace/elements.wizard.js"></script>
+<script src="./assets/js/ace/elements.aside.js"></script>
+<script src="./assets/js/ace/ace.js"></script>
+<!--<script src="./assets/js/ace/ace.ajax-content.js"></script>-->
+<script src="./assets/js/ace/ace.touch-drag.js"></script>
+<script src="./assets/js/ace/ace.sidebar.js"></script>
+<script src="./assets/js/ace/ace.sidebar-scroll-1.js"></script>
+<script src="./assets/js/ace/ace.submenu-hover.js"></script>
+<script src="./assets/js/ace/ace.widget-box.js"></script>
+<script src="./assets/js/ace/ace.settings.js"></script>
+<script src="./assets/js/ace/ace.settings-rtl.js"></script>
+<script src="./assets/js/ace/ace.settings-skin.js"></script>
+<script src="./assets/js/ace/ace.widget-on-reload.js"></script>
+<script src="./assets/js/ace/ace.searchbox-autocomplete.js"></script>
+
+<script src="./assets/js/date-time/moment.js"></script>
+
+<script src="./assets/js/date-time/bootstrap-datetimepicker.js"></script>
+<!-- <script src="./assets/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script> -->
+<script src="./assets/js/bootstrap-table.min.js"></script>
+<script src="./assets/js/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="./assets/js/jquery.validate.js"></script>
+    <script>
+    	
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-DD',
+            locale: moment.locale('zh-cn')
+        });
+    	
+    </script>
+
+    <script>
+		//设置浏览器cookie
+        function setcookie(name,value) {
+		      var cookie = document.cookie;
+		      // cookie 默认的有效期是 会话时间 session 关闭浏览器就失效
+		      var date = new Date();
+		      var timeStamp = date.getTime() + 60*60*1000;
+		      date.setTime(timeStamp);
+		      // 毫秒 +  14 * 24 * 60 * 60 * 1000
+		
+		      document.cookie =name+"="+value+"; expires="+date.toUTCString()+";path=/";
+		      return true;
+		  }
+       
+        //注销
+        function logout(){
+        	setcookie("user_idno","null");
+            window.location.href = "index.html";
+        }
+
+        var cookie = getCookie("user_idno");
+        //显示首页内容
+        function show_home() {
+            /*
+            *2019/7/15 8:59
+            *todo-bear 这里有个显示首页界面
+            */
+
+        }
+       
+        //修改密码页面
+        function chang_pwd_page(){
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-4 col-md-offset-4");
+            $("#mes").html("<form class='form-horizontal'>\n" +
+                "  <div class=\"form-group\">\n" +
+                "    <label for=\"exampleInputEmail1\"><b>旧密码</b></label>\n" +
+                "    <input type=\"password\" class=\"form-control col-md-3\" id=\"old_pwd\" placeholder=\"旧密码\">\n" +
+                "  </div>\n" +
+                "  <div class=\"form-group\">\n" +
+                "    <label for=\"exampleInputPassword1\"><b>新密码</b></label>\n" +
+                "    <input type=\"password\" class=\"form-control col-md-3\" id=\"new_pwd1\" placeholder=\"新密码\">\n" +
+                "  </div>\n" +
+                "  <div class=\"form-group\">\n" +
+                "    <label for=\"exampleInputPassword1\"><b>确认密码</b></label>\n" +
+                "    <input type=\"password\" class=\"form-control col-md-3\" id=\"new_pwd2\" placeholder=\"新密码\">\n" +
+                "  </div>\n" +
+                "  <div class=\"form-group text-center\">\n" +
+                "  <button type=\"button\" class=\"btn btn-success btn-lg\" onclick='change_pwd()'>确认修改</button>\n" +
+                "  </div>\n" +
+                "</form>");
+            /*
+            *2019/7/14 17:49
+            *todo-bear 确认两次密码输入是否一致,一致则传递给后台
+            */
+            // 测试上传
+        }
+
+        //修改密码功能实现
+        function change_pwd() {
+            var new_pwd1 = $("#new_pwd1").val();
+            var new_pwd2 = $("#new_pwd2").val();
+            var old_pwd = $("#old_pwd").val();
+            if (new_pwd1 == "" || new_pwd2 == "" || old_pwd == ""){
+            	alert("请将信息填写完整");
+            }else{
+            	 if (new_pwd1 !== new_pwd2){
+                     alert("两次输入密码不一致,请重新输入");
+                 } else{
+                     var mes = {
+                         "user_idno":cookie,
+                         "user_pwd":old_pwd,
+                         "user_new_pwd":new_pwd1
+                     };
+                     console.log(mes);
+                     var jsonData = JSON.stringify(mes);
+                     /*
+                     *2019/7/14 20:51
+                     *todo-bear 这里填上修改密码的url
+                     */
+                     $.ajax({
+                         type:"post",
+                         url: "update_pwd",
+                         data:jsonData,
+                         //dataType:"json",
+                         contentType : "application/json;charset=UTF-8",
+                         success: function(result){
+                         	alert(result);
+                         	$("#new_pwd1").val("");
+                         	$("#new_pwd2").val("");
+                         	$("#old_pwd").val("");
+                             
+                         },
+                         error:function(result){
+                             console.log(result);
+                         }
+
+                     });
+                 }
+            }
+           
+        }
+
+        //查看个人信息页面
+        function view_mes(){
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-12");
+            $("#mes").html("<h1>基本信息</h1>\n" +
+                "    <table id=\"table_basic\"></table>\n" +
+                "    <h1>教育经历</h1>\n" +
+                "    <table id=\"table_edu\"></table>\n" +
+                "    <h1>工作经历</h1>\n" +
+                "    <table id=\"table_work\"></table>\n" +
+                "    <h1>紧急联系人</h1>\n" +
+                "    <table id=\"table_em\"></table>\n" +
+                "    <h1>证书</h1>\n" +
+                "    <table id=\"table_ce\"></table>");
+            
+            $('#table_basic').bootstrapTable({
+                url: 'find_user',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                //cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                //pagination: true,                   //是否显示分页（*）
+                //sortable: false,                     //是否启用排序
+                //sortOrder: "asc",                   //排序方式
+                queryParams:function(params){
+                	console.log("halo");
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,//页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                },//传递参数（*）,//传递参数（*）
+                //sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                //pageSize: 10,                       //每页的记录行数（*）
+                //pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                //search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                //strictSearch: true,
+                //showColumns: true,                  //是否显示所有的列
+                //showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                //showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'user_idno',
+                    title: '身份证号'
+                }, {
+                    field: 'user_name',
+                    title: '姓名'
+                },  {
+                    field: 'user_email',
+                    title: '邮箱'
+                },  {
+                    field: 'user_tel',
+                    title: '手机号'
+                },  {
+                    field: 'user_gender',
+                    title: '性别'
+                },  {
+                    field: 'user_birthday',
+                    title: '生日',
+                    formatter:function (value,row,index) {
+                   		var mes =  new Date(value);
+                   		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                       }
+                }, {
+                	field:"user_avatar",
+                	title:"照片",
+                	formatter:function(value,row,index){
+                		if(value == null){
+                			return "照片未上传";
+                		}else{
+//                 			var photo_index = value.indexOf("personal_photo");
+//    			    		  	var photo_path = value.substring(photo_index);
+                			return '<img onmouseover="ShowFloatingImage(this, 250, 200);" style="width: 50px;   height: 80px;    margin-top: -6px;cursor: pointer;" src='+value+' alt="图片丢失了" >';
+                		}
+                		//return "<a class='thumbnail' href='javascript:;' onclick='view_image()'><img  src=/Online1.0.0"+value+"></a>";
+                		
+                	}
+                	
+                }, {
+                    field: 'user_address',
+                    title: '通讯地址'
+                }, {
+                    field: 'user_zip',
+                    title: '邮编'
+                }, {
+                    field: 'user_national',
+                    title: '民族'
+                }, {
+                    field: 'user_politics',
+                    title: '政治面貌'
+                }]
+            });
+           
+            $('#table_edu').bootstrapTable({
+                url: 'find_ed',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）.
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                // pagination: true,                   //是否显示分页（*）
+                // sortable: false,                     //是否启用排序
+                // sortOrder: "asc",                   //排序方式
+                queryParams:function(params){
+                	console.log("halo");
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,//页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                },//传递参数（*）
+                // sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                // pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                // showColumns: true,                  //是否显示所有的列
+                // showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                // clickToSelect: true,                //是否启用点击选中行
+                // height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'edu_id',
+                    visible: false
+
+                },  {
+                    field: 'education',
+                    title: '学历'
+                }, {
+                    field: 'university',
+                    title: '学校'
+                }, {
+                    field: 'major',
+                    title: '专业'
+                }, {
+                    field: 'start_date',
+                    title: '入学时间',
+                   	formatter:function (value,row,index) {
+                   		var mes =  new Date(value);
+                   		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                       }
+                }, {
+                    field: 'end_date',
+                    title: '毕业时间',
+                    formatter:function (value,row,index) {
+                   		var mes =  new Date(value);
+                   		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                       }
+                }]
+            });
+            $('#table_work').bootstrapTable({
+                url: 'find_wo',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                // pagination: true,                   //是否显示分页（*）
+                // sortable: false,                     //是否启用排序
+                // sortOrder: "asc",                   //排序方式
+                queryParams:function(params){
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,//页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                },//传递参数（*）,//传递参数（*）
+                // sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                // pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                // showColumns: true,                  //是否显示所有的列
+                // showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                // clickToSelect: true,                //是否启用点击选中行
+                // height: 200,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'work_org',
+                    title: '工作单位'
+
+                },  {
+                    field: 'work_duty',
+                    title: '职责'
+                }, {
+                    field: 'start_date',
+                    title: '开始时间',
+                    formatter:function (value,row,index) {
+                   		var mes =  new Date(value);
+                   		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                       }
+                }, {
+                    field: 'end_date',
+                    title: '结束时间',
+                    formatter:function (value,row,index) {
+                   		var mes =  new Date(value);
+                   		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                       }
+                }]
+            });
+            $('#table_em').bootstrapTable({
+                url: 'find_em',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                // pagination: true,                   //是否显示分页（*）
+                // sortable: false,                     //是否启用排序
+                // sortOrder: "asc",                   //排序方式
+                queryParams:function(params){
+                	console.log("halo");
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,//页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                },//传递参数（*）,//传递参数（*）
+                // sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                // pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                // showColumns: true,                  //是否显示所有的列
+                // showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                // clickToSelect: true,                //是否启用点击选中行
+                // height: 200,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'emergency_name',
+                    title: '姓名'
+                }, {
+                    field: 'emergency_address',
+                    title: '通讯地址'
+                }, {
+                    field: 'emergency_tel',
+                    title: '电话'
+                }]
+            });
+            $('#table_ce').bootstrapTable({
+                url: 'find_ce',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                // pagination: true,                   //是否显示分页（*）
+                // sortable: false,                     //是否启用排序
+                // sortOrder: "asc",                   //排序方式
+                queryParams:function(params){
+                	console.log("halo");
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,//页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                },//传递参数（*）,//传递参数（*）
+                // sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                // pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                // showColumns: true,                  //是否显示所有的列
+                // showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                // clickToSelect: true,                //是否启用点击选中行
+                // height: 200,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'certificate_name',
+                    title: '证书名称'
+                }, {
+                    field: 'certificate_no',
+                    title: '证书编号'
+                }, {
+                    field: 'certificate_org',
+                    title: '发证单位'
+                }, {
+                    field: 'certificate_enddate',
+                    title: '有效期',
+                    formatter:function (value,row,index) {
+                   		var mes =  new Date(value);
+                   		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                       }
+                }, {
+                    field: 'certificate_photo',
+                    title: '证书照片',
+                    formatter:function(value,row,index) {
+                    	if(value == null){
+                			return "照片未上传";
+                		}else{
+                			//var photo_index = value.indexOf("ce_images");
+   			    		  	//var photo_path = value.substring(photo_index);
+                			return '<img onmouseover="ShowFloatingImage(this, 250, 200);" style="width: 50px;   height: 80px;    margin-top: -6px;cursor: pointer;" src='+value+' alt="图片丢失了" >';
+                		}
+                    }
+                }]
+            });
+            /*console.log(cookie);
+            function qcondition(params){
+            	console.log("halo");
+                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                    limit: params.limit,   //页面大小
+                    offset: params.offset,//页码
+                    user_idno:cookie
+                };
+                return temp;
+            }*/
+        }
+
+        //项目管理页面
+        function manage_project_page(){
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-12");
+            $("#mes").html("<div id=\"toolbar\" class=\"btn-group\">\n" +
+                "<button type=\"button\" class=\"btn btn-success btn-lg\" onclick='show_project_modal()'>\n" +
+                "  提交项目\n" +
+                "</button>"+
+                "\t</div>\t\n" +
+                "<table id='tb_departments'></table>");
+            var TableInit = function () {
+                var oTableInit = new Object();
+                //初始化Table
+                oTableInit.Init = function () {
+                    $('#tb_departments').bootstrapTable({
+                        url: 'teacher/T_project',         //请求后台的URL（*）
+                        method: 'get',                      //请求方式（*）
+                        toolbar: '#toolbar',                //工具按钮用哪个容器
+                        striped: true,                      //是否显示行间隔色
+                        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                        pagination: true,                   //是否显示分页（*）
+                        sortable: false,                     //是否启用排序
+                        sortOrder: "asc",                   //排序方式
+                        queryParams: oTableInit.queryParams,//传递参数（*）
+                        sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                        pageNumber:1,                       //初始化加载第一页，默认第一页
+                        pageSize: 10,                       //每页的记录行数（*）
+                        pageList: [5,10, 25, 50, 100],        //可供选择的每页的行数（*）
+                        search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                        strictSearch: false,
+                        showColumns: true,                  //是否显示所有的列
+                        showRefresh: true,                  //是否显示刷新按钮
+                        minimumCountColumns: 2,             //最少允许的列数
+                        clickToSelect: true,                //是否启用点击选中行
+                        //height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                        // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                        cardView: false,                    //是否显示详细视图
+                        detailView: false,                   //是否显示父子表
+                        columns: [
+                            {
+                                field: 'name',
+                                title: '项目名称'
+                            }, {
+                                field: 'jobDescription',
+                                title: '项目描述'
+                            },  {
+                                field: 'itemId',
+                                title: '指标'
+                            } ,
+                            {
+                                field: 'projectYear',
+                                title: '季度'
+                            }, {
+                                field: 'startTime',
+                                title: '开始时间',
+                                formatter:timeFormatter
+                            },  {
+                                field: 'endTime',
+                                title: '结束时间',
+                                formatter:timeFormatter
+                            } , {
+                                field: 'status',
+                                title: '状态',
+                                formatter:function(value,row,index){
+                                    if (value === 0){
+                                        return "驳回";
+                                    }else  if(value === 1)
+                                    {
+                                        return "通过";
+                                    }else{
+                                        return "未审核";
+                                    }
+                                }
+                            }],
+                    });
+                };
+
+                //得到查询的参数啊
+
+                oTableInit.queryParams = function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,  //页码
+                        tId:cookie
+                    };
+                    return temp;
+                };
+                return oTableInit;
+            };
+
+            var ButtonInit = function () {
+                var oInit = new Object();
+                var postdata = {};
+                oInit.Init = function () {
+                    //初始化页面上面的按钮事件
+                };
+                return oInit;
+            };
+
+            $(function () {
+
+                //1.初始化Table
+                var oTable = new TableInit();
+                oTable.Init();
+
+                //2.初始化Button的点击事件
+                var oButtonInit = new ButtonInit();
+                oButtonInit.Init();
+
+            });
+
+        }
+
+        //显示添加项目模态框,映射后端信息
+        function show_project_modal() {
+            // $("#projectYear").html("<option>halo</option><option disabled style='color: red'>bear</option><option>meng</option>");
+            $("#add_Project_Modal").modal("show");
+            $.ajax({
+                type:"post",
+                url:"teacher/item",
+                dataType:"json",
+                contentType:"application/json;charset=UTF-8",
+                success:function(result){
+                    console.log(result);
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].isUsed === 0){
+                            var item_option = $("<option disabled style='color: red' value="+result[i].itemName+">"+result[i].itemName+"</option>");
+                        } else if (result[i].isUsed === 1){
+                            var item_option = $("<option value="+result[i].itemName+">"+result[i].itemName+"</option>");
+                        }
+                        $("#itemName").append(item_option);
+                    }
+                },
+                error:function(result){}
+            });
+            $.ajax({
+                type:"post",
+                url: "teacher/currentYear",
+                dataType:"json",
+                contentType : "application/json;charset=UTF-8",
+                success: function(result){
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].isUsed === 0){
+                            var projectYear_option = $("<option disabled style='color: red' value="+result[i].projectYear+">"+result[i].projectYear+"</option>")
+                        } else if (result[i].isUsed === 1){
+                            var projectYear_option = $("<option value="+result[i].projectYear+">"+result[i].projectYear+"</option>")
+                        }
+
+                        $("#projectYear").append(projectYear_option)
+                    }
+                },
+                error:function(result){
+                }
+
+            });
+        }
+
+        //添加项目功能实现
+        function add_project(){
+            var projectYear = $("select#projectYear option:checked").val();
+            var name = $("#name").val();
+            var itemName = $("selct#itemName option:checked").val();
+            var startTime = new Date($("#startTime").val());
+            var endTime = new Date($("#endTime").val());
+            var jobDescription = $("#jobDescription").val();
+            var mes ={
+                "tId":cookie,
+                "name":name,
+                "itemName":itemName,
+                "projectYear":projectYear,
+                "startTime":startTime,
+                "endTime":endTime,
+                "jobDescription":jobDescription
+            };
+            var jsonData = JSON.stringify(mes);
+            $.ajax({
+                type:"post",
+                data:jsonData,
+                url:"teacher/Sub_Project",
+                //dataType:"json",
+                contentType:"application/json;charset=UTF-8",
+                success:function(result){
+                    alert("提交成功");
+                    console.log(result);
+                    $("#tb_departments").bootstrapTable('refresh');
+                },
+                error:function(result){}
+            });
+        }
+
+        //时间处理函数
+        function timeFormatter(value,row,index){
+            if (value != null){
+                var mes =  new Date(value);
+                return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+            }
+        }
+        function ShowFloatingImage(image, width, height)
+        {   
+            //这一部分是创建一个div，将图片放大成设定的width，height
+            var id = "trailimageid";
+            var newdiv = document.getElementById(id);
+            if(newdiv == null)
+            {
+                newdiv = document.createElement('div');
+                newdiv.setAttribute('id',id);
+                //需要一个移出事件，将图片返回原来大小
+                newdiv.setAttribute('onmouseout', "HideElement('"+id+"');");
+                document.body.appendChild(newdiv);
+            }
+            newdiv.innerHTML = '<img src='+image.src+ ' width='+(image.width + width) + ' height=' + (image.height + height) + ' />';
+            //获取图片位置，调整图片位置样式
+            var absPos = GetAbsPosition(image);
+            newdiv.style.position = "absolute";
+            newdiv.style.left =absPos[0] - width/2+'px';
+            newdiv.style.top = absPos[1] - height/2+'px';
+            newdiv.style.display="block";
+        }
+        
+        //获取图片在表格中位置
+        function GetAbsPosition(obj)
+        {
+            var curleft = 0, curtop = 0;
+            do {
+                curleft += obj.offsetLeft;
+                curtop += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+            return [curleft,curtop];
+        }
+        //隐藏div
+        function HideElement(id)
+        {
+            var elem = document.getElementById(id);
+            elem.style.display="none";
+        }
+        
+        //修改个人信息页面
+        function change_info_page() {
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-4 col-md-offset-4");
+            $("#mes").html("<form id=\"validationRegisterForm\" method=\"post\" action=\"#\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<fieldset>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t    <label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input id=\"user_name\" name=\"userName\" type=\"text\" class=\"form-control\" placeholder=\"姓名\" />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-user\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input id=\"user_idno\" name=\"userIdno\" type=\"text\" class=\"form-control\" placeholder=\"身份证号\" />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-user\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<label>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input name=\"sex\" type=\"radio\" class=\"ace\" value=\"男\" checked />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"lbl\">男</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"pull-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input name=\"sex\" type=\"radio\" class=\"ace\" value=\"女\" />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"lbl\">女</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input id=\"user_email\" name=\"userEmail\" type=\"email\" class=\"form-control\" placeholder=\"邮箱\" title=\"邮箱用于找回密码\" />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-envelope\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input id=\"user_tel\" name=\"userTel\" type=\"text\" class=\"form-control\" placeholder=\"联系电话\" />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-phone\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input  type=\"text\" name=\" userBirthday\" class=\"form-control datetimepicker\" placeholder=\"生日\" />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-clock-o\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "                                                            <select id=\"user_national\" name=\"user_national\" type=\"text\" class=\"form-control\" placeholder=\"民族\">\n" +
+                "                                                                <option value=\"汉族\">汉族</option>\n" +
+                "                                                                <option value=\"蒙古族\">蒙古族</option>\n" +
+                "                                                                <option value=\"回族\">回族</option>\n" +
+                "                                                                <option value=\"藏族\">藏族</option>\n" +
+                "                                                                <option value=\"维吾尔族\">维吾尔族</option>\n" +
+                "                                                                <option value=\"苗族\">苗族</option>\n" +
+                "                                                                <option value=\"彝族\">彝族</option>\n" +
+                "                                                                <option value=\"壮族\">壮族</option>\n" +
+                "                                                                <option value=\"布依族\">布依族</option>\n" +
+                "                                                                <option value=\"朝鲜族\">朝鲜族</option>\n" +
+                "                                                                <option value=\"满族\">满族</option>\n" +
+                "                                                                <option value=\"侗族\">侗族</option>\n" +
+                "                                                                <option value=\"瑶族\">瑶族</option>\n" +
+                "                                                                <option value=\"白族\">白族</option>\n" +
+                "                                                                <option value=\"土家族\">土家族</option>\n" +
+                "                                                                <option value=\"哈尼族\">哈尼族</option>\n" +
+                "                                                                <option value=\"哈萨克族\">哈萨克族</option>\n" +
+                "                                                                <option value=\"傣族\">傣族</option>\n" +
+                "                                                                <option value=\"黎族\">黎族</option>\n" +
+                "                                                                <option value=\"傈僳族\">傈僳族</option>\n" +
+                "                                                                <option value=\"佤族\">佤族</option>\n" +
+                "                                                                <option value=\"畲族\">畲族</option>\n" +
+                "                                                                <option value=\"高山族\">高山族</option>\n" +
+                "                                                                <option value=\"拉祜族\">拉祜族</option>\n" +
+                "                                                                <option value=\"水族\">水族</option>\n" +
+                "                                                                <option value=\"东乡族\">东乡族</option>\n" +
+                "                                                                <option value=\"纳西族\">纳西族</option>\n" +
+                "                                                                <option value=\"景颇族\">景颇族</option>\n" +
+                "                                                                <option value=\"柯尔克孜族\">柯尔克孜族</option>\n" +
+                "                                                                <option value=\"土族\">土族</option>\n" +
+                "                                                                <option value=\"达斡尔族\">达斡尔族</option>\n" +
+                "                                                                <option value=\"仫佬族\">仫佬族</option>\n" +
+                "                                                                <option value=\"羌族\">羌族</option>\n" +
+                "                                                                <option value=\"布朗族\">布朗族</option>\n" +
+                "                                                                <option value=\"撒拉族\">撒拉族</option>\n" +
+                "                                                                <option value=\"毛南族\">毛南族</option>\n" +
+                "                                                                <option value=\"仡佬族\">仡佬族</option>\n" +
+                "                                                                <option value=\"锡伯族\">锡伯族</option>\n" +
+                "                                                                <option value=\"阿昌族\">阿昌族</option>\n" +
+                "                                                                <option value=\"普米族\">普米族</option>\n" +
+                "                                                                <option value=\"塔吉克族\">塔吉克族</option>\n" +
+                "                                                                <option value=\"怒族\">怒族</option>\n" +
+                "                                                                <option value=\"乌孜别克族\">乌孜别克族</option>\n" +
+                "                                                                <option value=\"俄罗斯族\">俄罗斯族</option>\n" +
+                "                                                                <option value=\"鄂温克族\">鄂温克族</option>\n" +
+                "                                                                <option value=\"德昂族\">德昂族</option>\n" +
+                "                                                                <option value=\"保安族\">保安族</option>\n" +
+                "                                                                <option value=\"裕固族\">裕固族</option>\n" +
+                "                                                                <option value=\"京族\">京族</option>\n" +
+                "                                                                <option value=\"塔塔尔族\">塔塔尔族</option>\n" +
+                "                                                                <option value=\"独龙族\">独龙族</option>\n" +
+                "                                                                <option value=\"鄂伦春族\">鄂伦春族</option>\n" +
+                "                                                                <option value=\"赫哲族\">赫哲族</option>\n" +
+                "                                                                <option value=\"门巴族\">门巴族</option>\n" +
+                "                                                                <option value=\"珞巴族\">珞巴族</option>\n" +
+                "                                                                <option value=\"基诺族\">基诺族</option>\n" +
+                "                                                            </select>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-flag\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "                                             <select id=\"user_politics\" name=\"user_politics\" type=\"text\" class=\"form-control\" value=\"政治面貌\">\n" +
+            	" 												<option value=\"群众\">群众</option>\n" +
+                "                                                <option value=\"共青团员\">共青团员</option>\n" +
+                "                                                <option value=\"中共党员\" selected>中共党员</option>\n" +
+                "                                                <option value=\"中共预备党员\">中共预备党员</option>\n" +
+                "                                                <option value=\"民革党员\">民革党员</option>\n" +
+                "                                                <option value=\"民盟盟员\">民盟盟员</option>\n" +
+                "                                                <option value=\"民建会员\">民建会员</option>\n" +
+                "                                                <option value=\"民进会员\">民进会员</option>\n" +
+                "                                                <option value=\"农工党党员\">农工党党员</option>\n" +
+                "                                                <option value=\"致公党党员\">致公党党员</option>\n" +
+                "                                                <option value=\"九三学社社员\">九三学社社员</option>\n" +
+                "                                                <option value=\"台盟盟员\">台盟盟员</option>\n" +
+                "                                                <option value=\"无党派人士\">无党派人士</option>\n" +
+                "                                                            </select>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-certificate\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input id=\"user_address\" name=\"userAddress\" type=\"text\" class=\"form-control\" placeholder=\"通讯地址\"  />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-home\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input id=\"user_zip\" name=\"userZip\" type=\"text\" class=\"form-control\" placeholder=\"邮编\"  />\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"ace-icon fa fa-barcode\"></i>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"block clearfix\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"block input-icon input-icon-right\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span id=\"registerTip1\" style=\"color:#A94442\"></span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\n" +
+                "\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"space-24\"></div>\n" +
+                "<div class='text-center'>" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a id=\"registerButton\"  href=\"javascript:;\" class=\" btn btn-lg btn-success\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"bigger-110\">确认修改</span>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</a>\n" +
+                "</div>"+
+                "\t\t\t\t\t\t\t\t\t\t\t\t</fieldset>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</form>");
+            $('.datetimepicker').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+            
+         // 验证注册表单
+        	$("#registerButton").bind("click", function() {
+        		$('#validationRegisterForm').submit();
+        	});
+        	$('#validationRegisterForm').validate({
+        		errorElement : 'div',
+        		errorClass : 'help-block',
+        		focusInvalid : false,
+        		ignore : "",
+        		rules : {
+        			userName : {
+        				required : true,
+        				minlength : 3,
+        				maxlength : 40
+        			},
+        			userIdno : {
+        				required : true,
+        				number : true,
+        				rangelength: [18,19]
+        			},
+        			sex : {
+        				required : true
+        			},
+        			userEmail : {
+        				required : true,
+        				email : true,
+        				maxlength : 30
+        			},
+        			userTel : {
+        				required : true,
+        				number : true,
+        				minlength : 11
+        				
+        			},
+        			userBirthday : {
+        				required : true
+        			},
+        			
+        			agree : {
+        				required : true,
+        			}
+        		},
+        		messages : {
+        			userName : {
+        				required : "请填写姓名",
+        				minlength : "姓名长度至少为3个字符",
+        				maxlength : "姓名长度至多为40个字符"
+        			},
+        			userIdno : {
+        				required : "请填写身份证号码",
+        				number : "只可填写数字",
+        				rangelength: "身份证号码长度为18位"
+        			},
+        			sex : "请选择性别",
+        			userEmail : {
+        				required : "请填写邮箱",
+        				email : "请填写正确的邮箱",
+        				maxlength : "邮箱长度至多为30个字符"
+        			},
+        			userTel : {
+        				required : "请填写手机号码",
+        				number:"请正确填写手机号码",
+        				minlength : "手机号码长度至少为11个字符"
+        			},
+        			userBirthday : {
+        				required : "请选择生日"
+        			}
+        			
+        			
+        			//agree : "您还未接受用户协议"
+        		},
+        		highlight : function(e) {
+        			$(e).closest('label').removeClass('has-info').addClass('has-error');
+        		},
+        		success : function(e) {
+        			$(e).closest('label').removeClass('has-error');// .addClass('has-info');
+        			$(e).remove();
+        		},
+        		errorPlacement : function(error, element) {
+        			error.insertAfter(element.parent());
+        		},
+        		submitHandler : function(form) {
+                    console.log("he");
+        			change_info();
+                    
+        		},
+        		invalidHandler : function(form) {
+        			console.log("here1");
+        		}
+        	});
+            
+            var mes = {"user_idno":cookie};
+            var jsonData = JSON.stringify(mes);
+            console.log(jsonData);
+            $.ajax({
+                type:"post",
+                url: "find_us",
+                data:jsonData,
+                dataType:"json",
+                contentType : "application/json;charset=UTF-8",
+                success: function(result){
+                    console.log("success");
+                    console.log(result);
+                    $("#user_name").val(result["user_name"]);
+                    $("#user_idno").val(result["user_idno"]);
+                    var mes = new Date(result["user_birthday"]);
+                    var year = mes.getFullYear();
+                    var month = mes.getMonth()+1;
+                    var day = mes.getDate();
+                    console.log(year);
+                    console.log(month);
+                    console.log(day);
+                    $(".datetimepicker").val(year+"-"+month+"-"+day);
+                    $("#user_national").val(result["user_national"]);
+                    $("#user_tel").val(result["user_tel"]);
+                    $("#user_email").val(result["user_email"]);
+                    $("#user_address").val(result["user_address"]);
+                    $("#user_zip").val(result["user_zip"]);
+                    $("#user_politics").val(result["user_politics"]);
+                   
+                    if (result["user_gender"] === "男"){
+                        $("input[name='sex'][value=男]").attr("checked",true);
+                    }else{
+                        $("input[name='sex'][value=女]").attr("checked",true);
+                    }
+                }
+            })
+
+        }
+        //修改个人信息功能实现
+        function change_info() {
+            var zip = $("#user_zip").val();//邮编
+            var national = $("select#user_national option:checked").val();
+            var idno = $("#user_idno").val();//身份证号
+            var name = $("#user_name").val();//姓名
+            var gender = $('input:radio:checked').val();
+            var t = $(".datetimepicker").val();
+            var birthday = new Date(t);
+            var politics = $('select#user_politics option:checked').val();
+            var tel_number = $("#user_tel").val();
+            var email = $("#user_email").val();
+            var address = $("#user_address").val();
+            var mes_basic = {
+                "user_idno":idno,
+                "user_email":email,
+                "user_tel":tel_number,
+                "user_name":name,
+                "user_gender":gender,
+                "user_birthday":birthday,
+                "user_address":address,
+                "user_zip":zip,
+                "user_national":national,
+                "user_politics":politics
+            };
+            console.log(mes_basic);
+            var jsonData = JSON.stringify(mes_basic);
+            $.ajax({
+                type:"post",
+                url: "update_user",
+                data:jsonData,
+                //dataType:"json",
+                contentType : "application/json;charset=UTF-8",
+                success: function(result){
+                	alert("修改成功");
+                    console.log("基本信息传输成功")
+                },
+                error:function(result){
+                    console.log(result);
+                }
+
+            });
+
+        }
+        
+        //上传个人照片页面
+        function add_photo(){
+        	$("#mes").removeClass();
+            $("#mes").addClass("row");
+            if (typeof global_photo_src === "undefined"){
+            	$("#mes").html("<div class='col-sm-5 text-center'><img alt='个人照片未上传' style='width:500px'></div><div class='dropzone col-sm-5 col-sm-offset-1' name='bear'></div>");
+            }else{
+            	$("#mes").html("<div class='col-sm-5 text-center'><img src="+global_photo_src+" style='width:500px'></div><div class='dropzone col-sm-5 col-sm-offset-1' name='bear'></div>");
+            }
+            Dropzone.autoDiscover = false;
+            var myDropzone = new Dropzone(".dropzone", {
+                url: 'upload_photo',
+                autoProcessQueue:true,
+                method:"post",  //也可用put
+                maxFiles : 1,
+                acceptedFiles: ".jpg,.gif,.png", //上传的类型
+                dictDefaultMessage:"拖拉图片文件到这里或者点击",
+                dictFallbackMessage:"你的浏览器不支持拖拉文件来上传",
+                dictMaxFilesExceeded:"文件数量过多",
+                addRemoveLinks:true,
+                dictFileTooBig:"可添加的最大文件大小为{{maxFilesize}}Mb，当前文件大小为{{filesize}}Mb ",
+                init:function(){
+                	this.on("success",function(file){
+                		alert("上传成功");
+                		//刷新页面
+                		window.location.reload();
+                		
+                		//$("#mes").html("<div class='col-sm-5 text-center'><img src="+global_photo_src+" style='width:500px'></div><div class='dropzone col-sm-5 col-sm-offset-1' name='bear'></div>");
+                	})
+                }
+            
+
+              });
+//            
+        }
+        
+        //修改教育经历页面实现//
+        function chang_edu_page() {
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-12");
+            $("#mes").html("<div id=\"toolbar\" class=\"btn-group\">\n" +
+                "<button type=\"button\" class=\"btn btn-success btn-lg\" data-toggle=\"modal\" data-target=\"#add_Edu_Modal\">\n" +
+                "  新增\n" +
+                "</button>"+
+                "<button type=\"button\" class=\"btn btn-danger btn-lg\"  onclick='delete_edu()'>\n" +
+                "  删除\n" +
+                "</button>"+
+                "\t</div>\t\n" +
+                "<table id='tb_departments'></table>");
+
+            var TableInit = function () {
+                var oTableInit = new Object();
+                //初始化Table
+                oTableInit.Init = function () {
+                    $('#tb_departments').bootstrapTable({
+                        url: 'find_ed',         //请求后台的URL（*）
+                        method: 'get',                      //请求方式（*）
+                        toolbar: '#toolbar',                //工具按钮用哪个容器
+                        striped: true,                      //是否显示行间隔色
+                        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                        //pagination: true,                   //是否显示分页（*）
+                        sortable: false,                     //是否启用排序
+                        sortOrder: "asc",                   //排序方式
+                        queryParams: oTableInit.queryParams,//传递参数（*）
+                        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                        pageNumber:1,                       //初始化加载第一页，默认第一页
+                        pageSize: 10,                       //每页的记录行数（*）
+                        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                        // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                        strictSearch: true,
+                        showColumns: true,                  //是否显示所有的列
+                        showRefresh: true,                  //是否显示刷新按钮
+                        minimumCountColumns: 2,             //最少允许的列数
+                        clickToSelect: true,                //是否启用点击选中行
+                        height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                        // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                        cardView: false,                    //是否显示详细视图
+                        detailView: false,                   //是否显示父子表
+                        columns: [{
+                            checkbox: true
+                        },{
+                            field: 'edu_id',
+                            visible: false
+
+                        },  {
+                            field: 'education',
+                            title: '学历'
+                        }, {
+                            field: 'university',
+                            title: '学校'
+                        }, {
+                            field: 'major',
+                            title: '专业'
+                        }, {
+                            field: 'start_date',
+                            title: '入学时间',
+                            formatter:function (value,row,index) {
+                           		var mes =  new Date(value);
+                           		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                               }
+                        }, {
+                            field: 'end_date',
+                            title: '毕业时间',
+                            formatter:function (value,row,index) {
+                           		var mes =  new Date(value);
+                           		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                               }
+                        }]
+                    });
+                };
+
+                //得到查询的参数啊
+
+                oTableInit.queryParams = function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,  //页码
+                        user_idno:cookie
+
+                    };
+                    return temp;
+                };
+                return oTableInit;
+            };
+
+
+            var ButtonInit = function () {
+                var oInit = new Object();
+                var postdata = {};
+
+                oInit.Init = function () {
+                    //初始化页面上面的按钮事件
+                };
+
+                return oInit;
+            };
+
+            $(function () {
+
+                //1.初始化Table
+                var oTable = new TableInit();
+                oTable.Init();
+
+                //2.初始化Button的点击事件
+                var oButtonInit = new ButtonInit();
+                oButtonInit.Init();
+
+            });
+        }
+
+        //新增教育经历功能实现
+        function add_education(){
+            var university = $("#university").val();
+            var education = $('option:checked').val();
+            var major = $("#major").val();
+            var s_date = $("#start_date").val();
+            var e_date = $("#end_date").val();
+            var start_date = new Date(s_date);
+            var end_date = new Date(e_date);
+            console.log(university,education,major,start_date,end_date)
+            var mes = {
+                "user_idno":cookie,
+                "start_date":start_date,
+                "end_date":end_date,
+                "education":education,
+                "university":university,
+                "major":major
+            };
+            var jsonData = JSON.stringify(mes);
+            $.ajax({
+                type:"post",
+                url: "ed",
+                data:jsonData,
+                dataType:"text",
+                contentType : "application/json;charset=UTF-8",
+                success: function(result){
+                    alert("添加成功");
+                    $("#tb_departments").bootstrapTable('refresh');
+
+                },
+                error:function(result){
+                    console.log(result);
+                }
+
+            });
+        }
+
+        //修改工作经历页面实现
+        function change_work_page() {
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-12");
+            $("#mes").html("<div id=\"toolbar\" class=\"btn-group\">\n" +
+                "<button type=\"button\" class=\"btn btn-success btn-lg\" data-toggle=\"modal\" data-target=\"#add_Work_Modal\">\n" +
+                "  新增\n" +
+                "</button>"+
+                "<button type=\"button\" class=\"btn btn-danger btn-lg\"  onclick='delete_wo()'>\n" +
+                "  删除\n" +
+                "</button>"+
+                "\t</div>\t\n" +
+                "<table id='tb_departments'></table>");
+
+
+
+            var TableInit = function () {
+                var oTableInit = new Object();
+                //初始化Table
+                oTableInit.Init = function () {
+                    $('#tb_departments').bootstrapTable({
+                        url: 'find_wo',         //请求后台的URL（*）
+                        method: 'get',                      //请求方式（*）
+                        toolbar: '#toolbar',                //工具按钮用哪个容器
+                        striped: true,                      //是否显示行间隔色
+                        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                        //pagination: true,                   //是否显示分页（*）
+                        sortable: false,                     //是否启用排序
+                        sortOrder: "asc",                   //排序方式
+                        queryParams: oTableInit.queryParams,//传递参数（*）
+                        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                        pageNumber:1,                       //初始化加载第一页，默认第一页
+                        pageSize: 10,                       //每页的记录行数（*）
+                        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                        // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                        strictSearch: true,
+                        showColumns: true,                  //是否显示所有的列
+                        showRefresh: true,                  //是否显示刷新按钮
+                        minimumCountColumns: 2,             //最少允许的列数
+                        clickToSelect: true,                //是否启用点击选中行
+                        height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                        // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                        cardView: false,                    //是否显示详细视图
+                        detailView: false,                   //是否显示父子表
+                        columns: [{
+                            checkbox: true
+                        },  {
+                            field: 'work_id',
+                            visible: false
+                        },{
+                            field: 'user_idno',
+                            title: '身份证号码'
+                        }, {
+                            field: 'work_org',
+                            title: '单位名称'
+                        }, {
+                            field: 'work_duty',
+                            title: '职责'
+                        }, {
+                            field: 'start_date',
+                            title: '开始时间',
+                            formatter:function (value,row,index) {
+                           		var mes =  new Date(value);
+                           		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                               }
+                        }, {
+                            field: 'end_date',
+                            title: '结束时间',
+                            formatter:function (value,row,index) {
+                           		var mes =  new Date(value);
+                           		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                               }
+                        }]
+                    });
+                };
+
+                //得到查询的参数
+
+                oTableInit.queryParams = function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,  //页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                };
+                return oTableInit;
+            };
+
+
+            var ButtonInit = function () {
+                var oInit = new Object();
+                var postdata = {};
+
+                oInit.Init = function () {
+                    //初始化页面上面的按钮事件
+                };
+
+                return oInit;
+            };
+
+            $(function () {
+
+                //1.初始化Table
+                var oTable = new TableInit();
+                oTable.Init();
+
+                //2.初始化Button的点击事件
+                var oButtonInit = new ButtonInit();
+                oButtonInit.Init();
+
+            });
+        }
+
+        //新增工作经历功能实现
+        function add_work(){
+            var work_org = $("#work_org").val();
+            var work_duty = $("#work_duty").val();
+            var s_date = $("#work_start_date").val();
+            var start_date = new Date(s_date);
+            var e_date = $("#work_end_date").val();
+            var end_date = new Date(e_date);
+            var mes = {
+                "user_idno":cookie,
+                "work_org":work_org,
+                "work_duty":work_duty,
+                "start_date":start_date,
+                "end_date":end_date
+            };
+            console.log(mes);
+            var jsonData = JSON.stringify(mes);
+            $.ajax({
+                type:"post",
+                url: "wo",
+                data:jsonData,
+                dataType:"text",
+                contentType : "application/json;charset=UTF-8",
+                success: function(result){
+                    console.log("基本信息传输成功");
+                    $("#tb_departments").bootstrapTable('refresh');
+                },
+                error:function(result){
+                    console.log(result);
+                }
+
+            });
+        }
+
+        //修改紧急联系人界面实现
+        function change_emergency() {
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-12");
+            $("#mes").html("<div id=\"toolbar\" class=\"btn-group\">\n" +
+                "<button type=\"button\" class=\"btn btn-success btn-lg\" data-toggle=\"modal\" data-target=\"#add_Emergency_Modal\">\n" +
+                "  新增\n" +
+                "</button>"+
+                "<button type=\"button\" class=\"btn btn-danger btn-lg\"  onclick='delete_em()'>\n" +
+                "  删除\n" +
+                "</button>"+
+                "\t</div>\t\n" +
+                "<table id='tb_departments'></table>");
+
+
+            var TableInit = function () {
+                var oTableInit = new Object();
+                //初始化Table
+                oTableInit.Init = function () {
+                    $('#tb_departments').bootstrapTable({
+                        url: 'find_em',         //请求后台的URL（*）
+                        method: 'get',                      //请求方式（*）
+                        toolbar: '#toolbar',                //工具按钮用哪个容器
+                        striped: true,                      //是否显示行间隔色
+                        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                        //pagination: true,                   //是否显示分页（*）
+                        sortable: false,                     //是否启用排序
+                        sortOrder: "asc",                   //排序方式
+                        queryParams: oTableInit.queryParams,//传递参数（*）
+                        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                        pageNumber:1,                       //初始化加载第一页，默认第一页
+                        pageSize: 10,                       //每页的记录行数（*）
+                        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                        // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                        strictSearch: true,
+                        showColumns: true,                  //是否显示所有的列
+                        showRefresh: true,                  //是否显示刷新按钮
+                        minimumCountColumns: 2,             //最少允许的列数
+                        clickToSelect: true,                //是否启用点击选中行
+                        height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                        // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                        cardView: false,                    //是否显示详细视图
+                        detailView: false,                   //是否显示父子表
+                        columns: [{
+                            checkbox: true
+                        },{
+                            field: 'emergency_id',
+                            visible: false
+                        }, {
+                            field: 'emergency_name',
+                            title: '姓名'
+                        }, {
+                            field: 'emergency_address',
+                            title: '通讯地址'
+                        }, {
+                            field: 'emergency_tel',
+                            title: '手机号'
+                        } ]
+                    });
+                };
+
+                //得到查询的参数
+                oTableInit.queryParams = function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset, //页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                };
+                return oTableInit;
+            };
+            var ButtonInit = function () {
+                var oInit = new Object();
+                var postdata = {};
+                oInit.Init = function () {
+                    //初始化页面上面的按钮事件
+                };
+                return oInit;
+            };
+            $(function () {
+
+                //1.初始化Table
+                var oTable = new TableInit();
+                oTable.Init();
+
+                //2.初始化Button的点击事件
+                var oButtonInit = new ButtonInit();
+                oButtonInit.Init();
+
+            });
+        }
+
+        //新增紧急联系人功能实现
+        function add_emergency(){
+            var emergency_name = $("#emergency_name").val();
+            var emergency_address = $("#emergency_address").val();
+            var emergency_tel = $("#emergency_tel").val();
+            var mes = {
+                "user_idno":cookie,
+                "emergency_name":emergency_name,
+                "emergency_address":emergency_address,
+                "emergency_tel":emergency_tel
+            };
+            console.log(mes);
+            var jsonData = JSON.stringify(mes);
+            $.ajax({
+                type:"post",
+                url: "em",
+                data:jsonData,
+                dataType:"text",
+                contentType : "application/json;charset=UTF-8",
+                success: function(result){
+                    console.log("基本信息传输成功")
+                    $("#tb_departments").bootstrapTable('refresh');
+                },
+                error:function(result){
+                    console.log(result);
+                }
+
+            });
+        }
+        //修改证书界面实现
+        function change_certificate(){
+            $("#mes").removeClass();
+            $("#mes").addClass("col-md-12");
+            $("#mes").html("<div id=\"toolbar\" class=\"btn-group\">\n" +
+                "<button type=\"button\" class=\"btn btn-success btn-lg\" data-toggle=\"modal\" data-target=\"#add_Certificate_Modal\">\n" +
+                "  新增\n" +
+                "</button>"+
+                "<button type=\"button\" class=\"btn btn-danger btn-lg\"  onclick='delete_ce()'>\n" +
+                "  删除\n" +
+                "</button>"+
+                "\t</div>\t\n" +
+                "<table id='tb_departments'></table>");
+
+
+            var TableInit = function () {
+                var oTableInit = new Object();
+                //初始化Table
+                oTableInit.Init = function () {
+                    $('#tb_departments').bootstrapTable({
+                        url: 'find_ce',         //请求后台的URL（*）
+                        method: 'get',                      //请求方式（*）
+                        toolbar: '#toolbar',                //工具按钮用哪个容器
+                        striped: true,                      //是否显示行间隔色
+                        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                        //pagination: true,                   //是否显示分页（*）
+                        sortable: false,                     //是否启用排序
+                        sortOrder: "asc",                   //排序方式
+                        queryParams: oTableInit.queryParams,//传递参数（*）
+                        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                        pageNumber:1,                       //初始化加载第一页，默认第一页
+                        pageSize: 10,                       //每页的记录行数（*）
+                        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                        // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                        strictSearch: true,
+                        showColumns: true,                  //是否显示所有的列
+                        showRefresh: true,                  //是否显示刷新按钮
+                        minimumCountColumns: 2,             //最少允许的列数
+                        clickToSelect: true,                //是否启用点击选中行
+                        height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                        // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                        cardView: false,                    //是否显示详细视图
+                        detailView: false,                   //是否显示父子表
+                        columns: [{
+                            checkbox: true
+                        },{
+                            field: 'certificate_id',
+                            visible: false
+                        }, {
+                            field: 'certificate_no',
+                            title: '证书编号'
+                        }, {
+                            field: 'certificate_name',
+                            title: '证书名称'
+                        }, {
+                            field: 'certificate_org',
+                            title: '发证单位'
+                        }, {
+                            field: 'certificate_enddate',
+                            title: '有效期',
+                            formatter:function (value,row,index) {
+                           		var mes =  new Date(value);
+                           		return mes.getFullYear().toString()+"-"+(mes.getMonth()+1).toString()+"-"+mes.getDate().toString();
+                               }
+                        }, {
+                            field: 'certificate_photo',
+                            title: '证书照片',
+                            formatter:function(value,row,index){
+                            		if(value == null){
+                            			return "照片未上传";
+                            		}else{
+                            			//var photo_index = value.indexOf("ce_images");
+               			    		  	//var photo_path = value.substring(photo_index);
+               			    		  	//console.log(photo_path);
+                            			return '<img onmouseover="ShowFloatingImage(this, 250, 200);"  style="width: 50px;   height: 80px;    margin-top: -6px;cursor: pointer;" src='+value+' alt="图片丢失了" >';
+                            		}
+                            	}
+                        }]
+                    });
+                };
+
+                //得到查询的参数
+                oTableInit.queryParams = function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset, //页码
+                        user_idno:cookie
+                    };
+                    return temp;
+                };
+                return oTableInit;
+            };
+            var ButtonInit = function () {
+                var oInit = new Object();
+                var postdata = {};
+                oInit.Init = function () {
+                    //初始化页面上面的按钮事件
+                };
+                return oInit;
+            };
+            $(function () {
+
+                //1.初始化Table
+                var oTable = new TableInit();
+                oTable.Init();
+
+                //2.初始化Button的点击事件
+                var oButtonInit = new ButtonInit();
+                oButtonInit.Init();
+
+            });
+            
+           
+
+        }
+        //新增证书功能实现
+        function add_certificate(){
+        	var certificate_no = $("#certificate_no").val();
+	        var certificate_name = $("#certificate_name").val();
+	        var certificate_org = $("#certificate_org").val();
+	        var certificate_enddate = new Date($("#certificate_enddate").val());
+	        var certificate_photo = $("#certificate_photo_src")[0].files[0];
+        	var formData = new FormData();
+        	formData.append("user_idno",cookie);
+         	formData.append("certificate_name",certificate_name);
+         	formData.append("certificate_no",certificate_no);
+         	formData.append("certificate_org",certificate_org);
+         	formData.append("certificate_enddate",certificate_enddate);
+          	formData.append("certificate_photo_src",certificate_photo);
+        	console.log(formData.get("certificate_photo_src"));
+        	$.ajax({
+        		type:"post",
+        		url:"ce",
+        		data:formData,
+        		async:false,
+        		contentType:false,
+        		processData:false,
+        		success:function(result){
+        			alert(result);
+        			$("#tb_departments").bootstrapTable('refresh');
+        		},
+        		error:function(result){
+        			console.log(result);
+        		}
+        	})
+//             var certificate_no = $("#certificate_no").val();
+//             var certificate_name = $("#certificate_name").val();
+//             var certificate_org = $("#certificate_org").val();
+//             var certificate_enddate = new Date($("#certificate_enddate").val());
+//             var certificate_photo = $("#certificate_photo")[0].files
+//             console.log(typeof certificate_photo);
+//             var mes = {
+//                 "user_idno":cookie,
+//                 "certificate_no":certificate_no,
+//                 "certificate_name":certificate_name,
+//                 "certificate_org":certificate_org,
+//                 "certificate_enddate":certificate_enddate,
+//                 "certificate_photo":certificate_photo
+//             };
+//             console.log(mes);
+//             var jsonData = JSON.stringify(mes);
+//             $.ajax({
+//                 type:"post",
+//                 url: "ce",
+//                 data:jsonData,
+//                 dataType:"text",
+//                 contentType : "application/json;charset=UTF-8",
+//                 success: function(result){
+//                     console.log("基本信息传输成功")
+//                     $("#tb_departments").bootstrapTable('refresh');
+//                 },
+//                 error:function(result){
+//                     console.log(result);
+//                 }
+
+//             });
+        }
+        //删除教育功能实现
+        function delete_edu(){
+        	var row=$("#tb_departments").bootstrapTable('getSelections');
+        	
+        	if (row.length > 0){
+        		if (confirm("确定要删除所选信息吗?")){
+        			alert("成功删除"+row.length+"条数据");
+                    for (var i = 0;i<row.length;i++){
+                        var mes = {edu_id:row[i]["edu_id"]};
+                        console.log(mes);
+                     
+                        var jsonData = JSON.stringify(mes);
+                        $.ajax({
+                            type:"post",
+                            url: "delete_ed",
+                            data:jsonData,
+                            //dataType:"json",
+                            contentType : "application/json;charset=UTF-8",
+                            success: function(result){
+                           	 console.log("here");
+                                
+                                $("#tb_departments").bootstrapTable('refresh');
+
+                            },
+                            error:function(result){
+                                console.log(result);
+                            }
+
+                        });
+                    }
+        		}  
+        	}else {
+        		alert("请选中要删除的信息");
+        	}
+        }
+        //删除工作经历功能实现
+        function delete_wo(){
+        	var row=$("#tb_departments").bootstrapTable('getSelections');
+        	if (row.length > 0){
+        		if (confirm("确定要删除所选信息吗?")){
+        			alert("成功删除"+row.length+"条数据");
+                    for (var i = 0;i<row.length;i++){
+                        var mes = {work_id:row[i]["work_id"]};
+                        console.log(mes)
+                        var jsonData = JSON.stringify(mes);
+                        $.ajax({
+                            type:"post",
+                            url: "delete_wo",
+                            data:jsonData,
+                            //dataType:"json",
+                            contentType : "application/json;charset=UTF-8",
+                            success: function(result){
+                                
+                                $("#tb_departments").bootstrapTable('refresh');
+                            },
+                            error:function(result){
+                                console.log(result);
+                            }
+
+                        });
+                    }
+            	}
+        	}else {
+        		alert("请选中要删除的信息");
+        	}
+        	
+            
+        }
+        //删除紧急联系人工作实现
+        function delete_em(){
+        	var row=$("#tb_departments").bootstrapTable('getSelections');
+        	if (row.length > 0){
+    			if (confirm("确定要删除所选信息吗?")){
+    				alert("成功删除"+row.length+"条数据");
+		            for (var i = 0;i<row.length;i++){
+		                var mes = {emergency_id:row[i]["emergency_id"]};
+		                var jsonData = JSON.stringify(mes);
+		                $.ajax({
+		                    type:"post",
+		                    url: "delete_em",
+		                    data:jsonData,
+		                    //dataType:"json",
+		                    contentType : "application/json;charset=UTF-8",
+		                    success: function(result){
+		                        
+		                        $("#tb_departments").bootstrapTable('refresh');
+		                    },
+		                    error:function(result){
+		                        console.log(result);
+		                    }
+
+		                });
+		            }
+			        	}
+        	}else {
+        		alert("请选中要删除的信息");
+        	}
+
+           
+        }
+        //删除证书功能实现
+        function delete_ce(){
+        	var row=$("#tb_departments").bootstrapTable('getSelections');
+        	if (row.length > 0){
+        		if (confirm("确定要删除所选信息吗?")){
+        			alert("成功删除"+row.length+"条数据");
+    	            for (var i = 0;i<row.length;i++){
+    	                var mes = {certificate_id:row[i]["certificate_id"]};
+    	                var jsonData = JSON.stringify(mes);
+    	                $.ajax({
+    	                    type:"post",
+    	                    url: "delete_ce",
+    	                    data:jsonData,
+    	                    //dataType:"json",
+    	                    contentType : "application/json;charset=UTF-8",
+    	                    success: function(result){
+    	                        
+    	                        $("#tb_departments").bootstrapTable('refresh');
+    	                    },
+    	                    error:function(result){
+    	                        console.log(result);
+    	                    }
+
+    	                });
+    	            }
+    	            }
+        	}else{
+        		alert("请选中要删除的信息");
+        	}
+			
+            
+        }
+    </script>
+
+</body>
+</html>

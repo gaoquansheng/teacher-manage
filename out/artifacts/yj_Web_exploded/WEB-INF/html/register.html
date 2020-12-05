@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="/">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>应急管理部紧急救援促进中心个人信息报名系统</title>
+
+		<meta name="description" content="注册页面" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" href="./assets/css/bootstrap.css" />
+		<link rel="stylesheet" href="./assets/css/font-awesome.css" />
+
+		<!--测试-->
+		<!-- text fonts -->
+		<link rel="stylesheet" href="./assets/css/ace-fonts.css" />
+
+		<!-- ace styles -->
+		<link rel="stylesheet" href="./assets/css/ace.css" />
+
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" href="./assets/css/ace-part2.css" />
+		<![endif]-->
+		<link rel="stylesheet" href="./assets/css/ace-rtl.css" />
+
+		<!--[if lte IE 9]>
+		  <!--<link rel="stylesheet" href="./css/ace-ie.css" />-->
+		<!--<![endif]&ndash;&gt;-->
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="./assets/js/html5shiv.js"></script>
+		<script src="./assets/js/respond.js"></script>
+		<![endif]-->
+
+		<!-- jquery -->
+<!-- 		 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script> -->
+		<script type="text/javascript" src="./assets/js/jquery.js"></script>
+		<script type="text/javascript" src="./assets/js/jquery.validate.js"></script>
+		<script type="text/javascript" src="./assets/js/tooltip.js"></script>
+		<script type="text/javascript" src="./assets/js/date-time/bootstrap-datepicker.js"></script>
+<!-- 		<script type="text/javascript" src="./assets/js/date-time/locales/bootstrap-datepicker.zh-CN.js"></script> -->
+		<script type="text/javascript" src="./assets/js/custom/login.js"></script>
+
+	</head>
+	<body class="login-layout light-login" style="background:#ffffff">
+		<div class="main-container">
+			<div id="navbar" class="navbar navbar-default" style="height: 200px">
+				<script type="text/javascript">
+                    try {
+                        ace.settings.check('navbar', 'fixed')
+                    } catch (e) {
+                    }
+				</script>
+				<div class="navbar-container" id="navbar-container">
+					<!-- #section:basics/sidebar.mobile.toggle -->
+					<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar1">
+						<span class="sr-only">Toggle sidebar</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- /section:basics/sidebar.mobile.toggle -->
+					<div class="navbar-header pull-left" style="margin-top: 60px">
+						<!-- #section:basics/navbar.layout.brand -->
+						<a href="#" class="navbar-brand">
+							<small style="font-size: 40px">
+								<i class="fa fa-leaf"></i>应急管理部紧急救援促进中心
+							</small>
+						</a>
+
+					</div>
+
+				</div>
+				<!-- /.navbar-container -->
+			</div>
+			<div class="main-content" style="margin-top: 10px">
+				<div class="row" >
+					<div class="col-sm-10 col-sm-offset-1 " >
+						<div class="login-container">
+							<div class="position-relative">
+								<div id="signup-box" class="signup-box widget-box visible no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header green lighter bigger text-center">
+												<i class="ace-icon fa fa-users blue"></i>
+												基本信息
+											</h4>
+
+											<div class="space-6"></div>
+
+											<form id="validationRegisterForm" method="post"  >
+												<fieldset>
+												    <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="user_name" name="userName" type="text" class="form-control" placeholder="姓名" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="user_idno" name="userIdno" type="text" class="form-control" placeholder="身份证号" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+
+
+													<label class="block clearfix">
+														<label>
+															<input name="sex" type="radio" class="ace" value="男" checked />
+															<span class="lbl">男</span>
+														</label>
+														<label class="pull-right">
+															<input name="sex" type="radio" class="ace" value="女" />
+															<span class="lbl">女</span>
+														</label>
+													</label>
+													
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="user_email" name="userEmail" type="email" class="form-control" placeholder="邮箱" title="邮箱用于登录和找回密码" />
+															<i class="ace-icon fa fa-envelope"></i>
+														</span>
+													</label>
+													
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="user_tel" name="userTel" type="number" class="form-control" placeholder="联系电话" />
+															<i class="ace-icon fa fa-phone"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input  id="birthday" name="userBirthday" type="text" class="form-control date" placeholder="生日" readonly/>
+															<i class="ace-icon fa fa-clock-o"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<select id="user_national" name="userNational" type="text" class="form-control" >
+																<option value="汉族" selected>汉族</option>
+																<option value="蒙古族">蒙古族</option>
+																<option value="回族">回族</option>
+																<option value="藏族">藏族</option>
+																<option value="维吾尔族">维吾尔族</option>
+																<option value="苗族">苗族</option>
+																<option value="彝族">彝族</option>
+																<option value="壮族">壮族</option>
+																<option value="布依族">布依族</option>
+																<option value="朝鲜族">朝鲜族</option>
+																<option value="满族">满族</option>
+																<option value="侗族">侗族</option>
+																<option value="瑶族">瑶族</option>
+																<option value="白族">白族</option>
+																<option value="土家族">土家族</option>
+																<option value="哈尼族">哈尼族</option>
+																<option value="哈萨克族">哈萨克族</option>
+																<option value="傣族">傣族</option>
+																<option value="黎族">黎族</option>
+																<option value="傈僳族">傈僳族</option>
+																<option value="佤族">佤族</option>
+																<option value="畲族">畲族</option>
+																<option value="高山族">高山族</option>
+																<option value="拉祜族">拉祜族</option>
+																<option value="水族">水族</option>
+																<option value="东乡族">东乡族</option>
+																<option value="纳西族">纳西族</option>
+																<option value="景颇族">景颇族</option>
+																<option value="柯尔克孜族">柯尔克孜族</option>
+																<option value="土族">土族</option>
+																<option value="达斡尔族">达斡尔族</option>
+																<option value="仫佬族">仫佬族</option>
+																<option value="羌族">羌族</option>
+																<option value="布朗族">布朗族</option>
+																<option value="撒拉族">撒拉族</option>
+																<option value="毛南族">毛南族</option>
+																<option value="仡佬族">仡佬族</option>
+																<option value="锡伯族">锡伯族</option>
+																<option value="阿昌族">阿昌族</option>
+																<option value="普米族">普米族</option>
+																<option value="塔吉克族">塔吉克族</option>
+																<option value="怒族">怒族</option>
+																<option value="乌孜别克族">乌孜别克族</option>
+																<option value="俄罗斯族">俄罗斯族</option>
+																<option value="鄂温克族">鄂温克族</option>
+																<option value="德昂族">德昂族</option>
+																<option value="保安族">保安族</option>
+																<option value="裕固族">裕固族</option>
+																<option value="京族">京族</option>
+																<option value="塔塔尔族">塔塔尔族</option>
+																<option value="独龙族">独龙族</option>
+																<option value="鄂伦春族">鄂伦春族</option>
+																<option value="赫哲族">赫哲族</option>
+																<option value="门巴族">门巴族</option>
+																<option value="珞巴族">珞巴族</option>
+																<option value="基诺族">基诺族</option>
+															</select>
+															<i class="ace-icon fa fa-flag"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+                                                            <select id="user_politics" name="userPolitics" type="text" class="form-control" value="政治面貌">
+                                                                <option value="群众">群众</option>
+                                                                <option value="共青团员">共青团员</option>
+                                                                <option value="中共党员" selected>中共党员</option>
+                                                                <option value="中共预备党员">中共预备党员</option>
+                                                                <option value="民革党员">民革党员</option>
+                                                                <option value="民盟盟员">民盟盟员</option>
+                                                                <option value="民建会员">民建会员</option>
+                                                                <option value="民进会员">民进会员</option>
+                                                                <option value="农工党党员">农工党党员</option>
+                                                                <option value="致公党党员">致公党党员</option>
+                                                                <option value="九三学社社员">九三学社社员</option>
+                                                                <option value="台盟盟员">台盟盟员</option>
+                                                                <option value="无党派人士">无党派人士</option>
+                                                            </select>
+															<i class="ace-icon fa fa-certificate"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="user_address" name="userAddress" type="text" class="form-control" placeholder="通讯地址"  />
+															<i class="ace-icon fa fa-home"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="user_zip" name="userZip" type="text" class="form-control" placeholder="邮编"  />
+															<i class="ace-icon fa fa-barcode"></i>
+														</span>
+													</label>
+
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="user_pwd" name="userPwd" type="password" class="form-control" placeholder="密码" />
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+
+													
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<span id="registerTip1" style="color:#A94442"></span>
+														</span>
+													</label>
+
+													<div class="space-24"></div>
+
+													<div class="clearfix toolbar ">
+														<button type="reset" class="width-45 pull-left btn btn-sm">
+															<i class="ace-icon fa fa-refresh"></i>
+															<span class="bigger-110">重置</span>
+														</button>
+
+														<a id="registerButton"  href="javascript:;" class="width-45 pull-right btn btn-sm btn-success"  >
+															<span class="bigger-110">确认注册</span>
+															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+														</a>
+													</div>
+												</fieldset>
+											</form>
+										</div>
+
+										<div class="toolbar center">
+											我已注册，现在就
+											<a href="index.html"  class="back-to-login-link">
+												<i class="ace-icon fa fa-arrow-left"></i>
+												登录
+											</a>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.signup-box 注册基本信息-->
+								</div>
+							</div><!-- /.position-relative -->
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.main-content -->
+			<div class="footer">
+                <div class="footer-inner">
+                    <!-- #section:basics/footer -->
+                    <div class="footer-content-nobordertop">
+                        <span class="bigger-120">
+                            <span class="blue bolder">
+                              应急管理部紧急救援促进中心
+                            </span>
+                            &copy; 
+                            2019 &emsp;&emsp;&emsp;&emsp;<span class="blue bolder">
+                              防灾科技学院应急管理学院技术支持
+                            </span>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='./js/jquery.mobile.custom.js'>"+"<"+"/script>");
+		</script>
+		<script>
+
+            function register1() {
+   			   var zip = $("#user_zip").val();//邮编
+               var national = $("select#user_national option:checked").val();
+               var idno = $("#user_idno").val();//身份证号
+               var password = $("#user_pwd").val();//密码
+               var name = $("#user_name").val();//姓名
+               var gender = $('input:radio:checked').val();//性别.1为男生,0为女生
+               var t = $("#birthday").val();
+               var birthday = new Date(t);
+               var politics = $('select#user_politics option:checked').val();
+               var tel_number = $("#user_tel").val();
+               var email = $("#user_email").val();
+               var address = $("#user_address").val();
+               var mes_basic = {
+                   "user_idno":idno,
+                   "user_email":email,
+                   "user_tel":tel_number,
+                   "user_name":name,
+                   "user_pwd":password,
+                   "user_gender":gender,
+                   "user_birthday":birthday,
+                   "user_address":address,
+                   "user_zip":zip,
+                   "user_national":national,
+                   "user_politics":politics,
+               };
+               console.log(mes_basic);
+               var jsonData = JSON.stringify(mes_basic);
+               $.ajax({
+                   type:"post",
+                   url: "us",
+                   data:jsonData,
+                   dataType:"text",
+                   contentType : "application/json;charset=UTF-8",
+                   success: function(result){
+                   		alert(result);
+                        window.location.href = "index.html";
+                   },
+                   error:function(result){
+                       console.log(result);
+                   }
+               });
+      		
+                
+
+            }
+		</script>
+
+	</body>
+</html>

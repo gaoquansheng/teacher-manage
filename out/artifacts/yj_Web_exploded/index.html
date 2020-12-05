@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="/">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>防灾科技学院教师业绩管理系统</title>
+
+		<meta name="description" content="Java企业通用开发平台框架 |登录页面" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" href="./assets/css/bootstrap.css" />
+		<link rel="stylesheet" href="./assets/css/font-awesome.css" />
+
+		<!--测试-->
+		<!-- text fonts -->
+		<link rel="stylesheet" href="./assets/css/ace-fonts.css" />
+
+		<!-- ace styles -->
+		<link rel="stylesheet" href="./assets/css/ace.css" />
+
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" href="./assets/css/ace-part2.css" />
+		<![endif]-->
+		<link rel="stylesheet" href="./assets/css/ace-rtl.css" />
+
+		<!--[if lte IE 9]>
+		  <!--<link rel="stylesheet" href="./css/ace-ie.css" />-->
+		<!--<![endif]&ndash;&gt;-->
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="./assets/js/html5shiv.js"></script>
+		<script src="./assets/js/respond.js"></script>
+		<![endif]-->
+
+		<!-- jquery -->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./assets/js/jquery.validate.js"></script>
+		<script type="text/javascript" src="./assets/js/tooltip.js"></script>
+		<script type="text/javascript" src="./assets/js/date-time/bootstrap-datepicker.js"></script>
+<!-- 		<script type="text/javascript" src="./assets/js/date-time/locales/bootstrap-datepicker.zh-CN.js"></script> -->
+		<script type="text/javascript" src="./assets/js/custom/login.js"></script>
+
+	</head>
+	<body class="login-layout light-login" style="background:#ffffff">
+		<div class="main-container">
+		<div id="navbar" class="navbar navbar-default" style="height: 200px">
+				<script type="text/javascript">
+                    try {
+                        ace.settings.check('navbar', 'fixed')
+                    } catch (e) {
+                    }
+				</script>
+				<div class="navbar-container" id="navbar-container">
+					<!-- #section:basics/sidebar.mobile.toggle -->
+					<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+						<span class="sr-only">Toggle sidebar</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- /section:basics/sidebar.mobile.toggle -->
+					<div class="navbar-header pull-left" style="margin-top: 60px">
+						<!-- #section:basics/navbar.layout.brand -->
+						<a href="#" class="navbar-brand">
+							<small style="font-size: 40px">
+								<i class="fa fa-leaf"></i>应急管理部紧急救援促进中心123
+							</small>
+						</a>
+
+					</div>
+
+				</div>
+				<!-- /.navbar-container -->
+			</div>
+			<div class="main-content">
+				<div class="row" style="margin-top:5px;display:flex">
+				<div  id="news" style="border:#e5e5e5 1px solid;border-radius:10px;background:#F7F7F7;height:400px;flex:1">
+				<div style="margin-top:20px"><h2 style="display: inline">新闻公告</h2><a href="html/news"><span class="pull-right"><img src="./assets/img/more.png"></span></a></div>
+				<hr>
+				<div id="mes">
+			
+
+				</div>
+				
+					</div>
+					
+<!-- 					<div class="col-sm-3 " style="padding-right:0px"> -->
+						<div class="login-container" style="margin-right:0px;margin-left:5px;flex:none">
+
+
+<!-- 							<div class="position-relative" > -->
+								<div id="login-box" class="login-box visible widget-box no-border">
+									<div class="widget-body" >
+										<div class="widget-main" >
+											<h4 class="header blue lighter bigger text-center">
+												<i class="ace-icon fa fa-coffee green"></i>
+												登录
+											</h4>
+
+											<div class="space-6"></div>
+
+											<form id="validationLoginForm" method="post" action="#">
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<!-- <input id="loginEmail" name="email" type="text" class="form-control" placeholder="邮箱" data-rel="tooltip" title="邮箱作为账号" data-placement="right" /> -->
+															<input id="loginid" name="useridno" type="text" class="form-control" placeholder="身份证号/手机号" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="loginpwd" name="password" type="password" class="form-control" placeholder="密码" />
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+													
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<span id="loginTip" style="color:#A94442"></span>
+														</span>
+													</label>
+
+													<div class="space"></div>
+
+													<div class="clearfix">
+														<label class="inline">
+															<input id="rememberMe" name="rememberMe" type="checkbox" class="ace" />
+															<span class="lbl">下次自动登录</span>
+														</label>
+
+														<button id="loginButton" type="button" onclick="login()" class="width-35 pull-right btn btn-sm btn-primary">
+															<i class="ace-icon fa fa-key"></i>
+															<span class="bigger-110">登录</span>
+														</button>
+													</div>
+
+													<div class="space-4"></div>
+												</fieldset>
+											</form>
+
+										</div><!-- /.widget-main -->
+
+										<div class="toolbar clearfix">
+											<div>
+												<a href="#" data-target="#forgot-box" class="forgot-password-link">
+													<i class="ace-icon fa fa-arrow-left"></i>
+													忘记密码？
+												</a>
+											</div>
+
+											<div>
+												<a href="html/register"  class="user-signup-link">
+													立即注册
+													<i class="ace-icon fa fa-arrow-right"></i>
+												</a>
+											</div>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.login-box -->
+
+								<div id="forgot-box" class="forgot-box widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header red lighter bigger">
+												<i class="ace-icon fa fa-key"></i>
+												找回密码
+											</h4>
+
+											<div class="space-6"></div>
+											<p>
+												输入您的电子邮箱
+											</p>
+
+											<form id="validationRetrieveForm" method="post" action="#">
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="retrieveEmail" name="email" type="email" class="form-control" placeholder="邮箱" />
+															<i class="ace-icon fa fa-envelope"></i>
+														</span>
+													</label>
+													
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<span id="retrieveTip" style="color:#A94442"></span>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="retrievecode"  type="text" class="form-control" placeholder="验证码" readonly/>
+															<i class="ace-icon fa fa-check"></i>
+														</span>
+													</label>
+													<div class="clearfix">
+														<input	 id="confirm_mes" onclick="confirm1()" value="确认" type="button"  class="width-35 pull-left btn btn-sm btn-success"/>
+														<input	 id="retrievebutton" onclick="forget_pwd(this)" value="获取验证码" type="button" disabled class="width-35 pull-right btn btn-sm btn-danger"/>
+													</div>
+												</fieldset>
+											</form>
+										</div><!-- /.widget-main -->
+
+										<div class="toolbar center">
+											<a href="#" data-target="#login-box" class="back-to-login-link">
+												登录
+												<i class="ace-icon fa fa-arrow-right"></i>
+											</a>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.forgot-box -->
+								</div>
+
+<!-- 							</div>/.position-relative						 -->
+<!-- 							
+<!-- 						</div> -->
+<!-- 					</div>/.col -->
+				</div><!-- /.row -->
+			</div><!-- /.main-content -->
+			</div><!-- main-container -->
+			<div class="footer">
+                <div class="footer-inner">
+                    <!-- #section:basics/footer -->
+                    <div class="footer-content-nobordertop">
+                        <span class="bigger-120">
+                            <span class="blue bolder">
+                              	应急管理部紧急救援促进中心
+                            </span>
+                            &copy;2019 &emsp;&emsp;&emsp;&emsp;
+                            <span class="blue bolder">
+                              	防灾科技学院应急管理学院技术支持
+                            </span>
+                            
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+		<!--[if !IE]> -->
+		<!--<script type="text/javascript">-->
+			<!--window.jQuery || document.write("<script src='./js/jquery.js'>"+"<"+"/script>");-->
+		<!--</script>-->
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+		<!--<script type="text/javascript">-->
+ 			<!--window.jQuery || document.write("<script src='./js/jquery1x.js'>"+"<"+"/script>");-->
+		<!--</script>-->
+		<!--<![endif]&ndash;&gt;-->
+		
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='./js/jquery.mobile.custom.js'>"+"<"+"/script>");
+		</script>
+		<script>
+			$(function(){
+				 $.ajax({
+                        url:"news/L_news",
+                        method:"post",
+                        dataType:"json",
+                        contentType : "application/json;charset=UTF-8",
+                        success: function(result){
+                        	var ul_news = $("<ul></ul>")
+                            $("#mes").append(ul_news);
+                            if (result.length > 5){
+                        	   for(var i = 0;i< 5;i++){
+                        		   var li_news = $("<li style='display:block;height:60px;border-bottom:1px gray dashed;line-height:60px'><a style='text-decoration:none;cursor:pointer' target='_blank' href='html/view_news?news_id="+result[i]["news_id"]+"'><span class='fa fa-circle' ></span> "+result[i]["news_title"]+"</a><span class='pull-right'>"+tran_time(result[i]["news_date"])+"</span></li>");
+                        		   $("ul").append(li_news);
+                        	   }
+                            }else{
+                        	   for(var i = 0;i<result.length;i++){
+                        		   var li_news = $("<li style='display:block;height:60px;border-bottom:1px gray dashed;line-height:60px'><a style='text-decoration:none;cursor:pointer' target='_blank' href='html/view_news?news_id="+result[i]["news_id"]+"')'><span class='fa fa-circle' ></span>  "+result[i]["news_title"]+"</a><span class='pull-right'>"+tran_time(result[i]["news_date"])+"</span></li>");
+                        		   $("ul").append(li_news);
+                        	   }
+                            }
+
+                        },
+                        error:function(result){
+                            console.log(result);
+                        }
+                    })
+			})
+			
+			//转换时间
+			function tran_time(time){
+				var form_time = new Date(time);
+				var year = form_time.getFullYear();
+				var month = form_time.getMonth()+1;
+				var day = form_time.getDate();
+				return year+"-"+month+"-"+day;
+			}
+			
+			//查看新闻
+		    function view_news(news_id){
+		    	var mes = {
+		    			"news_id":news_id
+		    	};
+		    	var jsonData = JSON.stringify(mes);
+		    	$.ajax({
+		            type:"post",
+		            url: "news/find_news",
+		            data:jsonData,
+		            dataType:"json",
+		            contentType : "application/json;charset=UTF-8",
+		            success: function(result){
+		                $(".row").html("<div class='col-sm-10 col-sm-offset-1' id='news_center' style='margin-top: 20px;background-color:#fcfcfc;border:#e5e5e5 1px solid;font-family:Microsoft Yahei, 宋体, sans-serif;min-height:750px'>");
+		                $("#news_center").append("<div style='text-align:center'><button class='pull-left btn btn-sm btn-default' onclick='history.go(0)'>返回</button><h1 style='color:#cc3333'>"+result[0]["news_title"]+"</h1></div><hr>");
+		                $("#news_center").append(result[0]["news_content"]);
+		            },
+		            error:function(result){
+		                console.log(result);
+		            }
+
+		        });
+		    }
+		</script>
+		<script>
+            //设置浏览器cookie
+            function setcookie(name,value) {
+                var cookie = document.cookie;
+                // cookie 默认的有效期是 会话时间 session 关闭浏览器就失效
+                var date = new Date();
+                var timeStamp = date.getTime() + 60*60*1000;
+                date.setTime(timeStamp);
+                // 毫秒 +  14 * 24 * 60 * 60 * 1000
+
+                document.cookie =name+"="+value+"; expires="+date.toUTCString()+";path=/";
+                return true;
+            }
+
+            //读取cookie
+            function getCookie(name) {
+                var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+
+                if(arr=document.cookie.match(reg))
+
+                    return unescape(arr[2]);
+                else
+                    return null;
+            }
+
+          //判断输入是否为手机号
+            function isPoneAvailable($poneInput) {
+                var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+                if (!myreg.test($poneInput)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+           
+            function login(){
+                var user_idno = $("#loginid").val();
+                var user_pwd = $("#loginpwd").val();
+                if (user_idno === "" || user_pwd === ""){
+                	alert("请填写完整登录信息")
+                }else{
+					var mes = {
+						"tId":user_idno,
+						"passwd":user_pwd
+					};
+					setcookie("user_idno",user_idno);
+					var jsonData = JSON.stringify(mes);
+					console.log(jsonData);
+					$.ajax({
+						url:"root/Login",
+						method:"post",
+						data:jsonData,
+						dataType:"json",
+						contentType : "application/json;charset=UTF-8",
+						success: function(result){
+							// if (result["user_role"] === undefined){
+							// 	alert(result);
+							// }else{
+							// 	setcookie("user_idno",result["user_idno"]);
+							// 	if (result["user_role"] === 0){
+							// 		window.location.href = "html/general";
+							// 	} else {
+							//
+							// 		window.location.href = "html/root";
+							// 	}
+							// }
+                            window.location.href = "html/general";
+						},
+						error:function(result){
+							console.log(result);
+						}
+					})
+
+
+                }
+                
+            }
+
+            //找回密码功能实现
+            var countDown=60;
+            var global_result;
+          
+            function forget_pwd(val) {
+                if (countDown == 60){
+                	var r = true;
+                    $("#retrievecode").attr("readOnly",false);
+                    var user_email = $("#retrieveEmail").val();
+                    console.log(user_email);
+                    var mes = {"user_email":user_email};
+                    var jsonData = JSON.stringify(mes);
+                    $.ajax({
+						method:"post",
+						url:"find_pwd",
+						async:false,
+						data:jsonData,
+						contentType:"application/json;charset=UTF-8",
+						success:function (result) {
+							console.log(result);
+							if (result == ""){
+								alert("邮箱不正确，请重新输入")
+								val.removeAttribute("disabled");
+			                    $("#retrievecode").attr("readOnly",true);
+			                    val.value = "获取验证码";
+			                    countDown = 60;
+			                    r = false;
+			                    return r;
+							}else {
+								global_result = result
+								
+							}
+                        }
+					});
+					console.log(r);
+					if(r == false){
+						 return r;
+					}
+				}
+                if (countDown == 0) {
+                    val.removeAttribute("disabled");
+                    val.value = "获取验证码";
+                    countDown = 60;
+                    return;
+                } else {
+                    val.setAttribute("disabled", true);
+                    val.value = "重新发送(" + countDown + ")";
+                    countDown--;
+                }
+                setTimeout(function () {
+                    forget_pwd(val)
+                }, 1000);
+                
+
+			}
+            
+          //验证验证码是否正确
+			function confirm1() {
+				if (global_result === $("#retrievecode").val()){
+                    var user_email = $("#retrieveEmail").val();
+                    var mes = {"user_email":user_email};
+                    var jsonData = JSON.stringify(mes);
+                    $.ajax({
+                        method:"post",
+                        url:"new_pwd",
+                        async:false,
+                        data:jsonData,
+                        contentType:"application/json;charset=UTF-8",
+                        success:function (result) {
+                        	console.log(result);
+                            alert(result);
+                        }
+                    });
+				}else{
+				    alert("验证码不正确,请重新输入");
+				}
+            }
+
+			//监听邮箱是否填写完整(有瑕疵)
+            $("#retrieveEmail").bind("input propertychange",function(event){
+                // console.log($("#retrieveEmail").val())
+                if($("#retrieveEmail").val().indexOf("@") != -1 ){
+                    // swal("请输入正确的邮箱格式");
+                    $("#retrievebutton").attr("disabled",false)
+
+				}
+            });
+
+
+			
+		</script>
+
+	</body>
+</html>

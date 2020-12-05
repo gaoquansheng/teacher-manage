@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<base href="/">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>防灾科技学院教师业绩管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta http-equiv="refresh" content="1800"/>
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="./assets/css/font-awesome.css"/>
+    <!-- text fonts -->
+    <link rel="stylesheet" href="./assets/css/ace-fonts.css"/>
+    <link rel="stylesheet" href="./assets/css/activities-serverload.css"/>
+    <link rel="stylesheet" href="./assets/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="./assets/css/bootstrap-datetimepicker.css"/>
+    <link rel="stylesheet" href="./assets/css/dropzone.css"/>
+    <!-- ace styles -->
+    <link rel="stylesheet" href="./assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="./assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="./assets/css/ace-ie.css"/>
+    <![endif]-
+    ->
+    <!-- ace settings handler -->
+    <script src="./assets/js/ace-extra.js"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="./assets/js/html5shiv.js"></script>
+    <script src="./assets/js/respond.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='./assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='./assets/js/jquery1x.js'>" + "<" + "/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement)
+            document.write("<script src='./assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+    <script>
+        //读取cookie
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                return unescape(arr[2]);
+            else
+                return null;
+        }
+
+        //权限认证
+        var idno = getCookie("user_idno");
+        console.log("idno" + idno);
+        if (idno === "null") {
+            alert("请重新登录");
+            window.location.href = "index.html";
+        } else {
+            var mes = {
+                "user_idno": idno
+            };
+            var jsonData = JSON.stringify(mes);
+            console.log(mes);
+            $.ajax({
+                type: "post",
+                url: "find_us",
+                data: jsonData,
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (result) {
+                    console.log(result);
+                    if (result["user_role"] == 1) {
+                        window.location.href = "index.html";
+                    }
+                    if (result["user_avatar"] != null && result["user_avatar"] != "") {
+// 			    		  console.log(result["user_avatar"]);
+// 			    		  var photo_index = result["user_avatar"].indexOf("personal_photo");
+// 			    		  var photo_path = result["user_avatar"].substring(photo_index)
+// 			    		  console.log(photo_path);
+                        global_photo_src = result["user_avatar"];
+                        $("#user_photo").attr("src", result["user_avatar"]);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+
+        //显示照片
+
+    </script>
+</head>
+<body class="no-skin">
+<div id="navbar" class="navbar navbar-default">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('navbar', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <div class="navbar-container" id="navbar-container">
+        <!-- #section:basics/sidebar.mobile.toggle -->
+        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+            <span class="sr-only">Toggle sidebar</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <!-- /section:basics/sidebar.mobile.toggle -->
+        <div class="navbar-header pull-left">
+            <!-- #section:basics/navbar.layout.brand -->
+            <a href="index.html" target="_blank" class="navbar-brand">
+                <small>
+                    <i class="fa fa-leaf"></i>防灾科技学院教师业绩管理系统
+                </small>
+            </a>
+        </div>
+        <!-- #section:basics/navbar.dropdown -->
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <!-- #section:basics/navbar.user_menu -->
+                <li>
+                    <input type="button" class="btn btn-sm btn-danger" value="注销" onclick="logout()">
+                </li>
+                <!-- /section:basics/navbar.user_menu -->
+            </ul>
+        </div>
+        <!-- /section:basics/navbar.dropdown -->
+    </div>
+    <!-- /.navbar-container -->
+</div>
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <!-- #section:basics/sidebar -->
+    <div id="sidebar" class="sidebar responsive">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('sidebar', 'fixed')
+            } catch (e) {
+
+            }
+        </script>
+        <!-- /.sidebar-shortcuts -->
+        <ul class="nav nav-list">
+            <!--导航栏首页开始-->
+            <li>
+                <a href="index.html" target="_blank">
+                    <i class="menu-icon fa fa-desktop"></i>
+                    <span>首页</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
+            <!--导航栏首页结束-->
+            <!--修改密码开始-->
+            <li>
+                <a href="javascript:;" class="dropdown-toggle" onclick="chang_pwd_page()">
+                    <i class="menu-icon fa fa-pencil-square-o"></i>
+                    <span class="menu-text">修改密码</span>
+                </a>
+                <b class="arrow"></b>
+
+            </li>
+            <!--修改密码结束-->
+            <li>
+                <a href="javascript:;" class="dropdown-toggle" onclick="manage_project_page()">
+                    <i class="menu-icon fa fa-anchor"></i>
+                    <span class="menu-text">绩效管理</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
+            <li>
+                <a href="javascript:;" class="dropdown-toggle" onclick="show_project_page()">
+                    <i class="menu-icon fa fa-anchor"></i>
+                    <span class="menu-text">绩效公示</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
+        </ul>
+        <!-- /.nav-list -->
+        <!-- #section:basics/sidebar.layout.minimize -->
+        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+            <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left"
+               data-icon2="ace-icon fa fa-angle-double-right"></i>
+        </div>
+        <!-- /section:basics/sidebar.layout.minimize -->
+        <script type="text/javascript">
+            try {
+                ace.settings.check('sidebar', 'collapsed')
+            } catch (e) {
+            }
+        </script>
+    </div>
+    <!-- /section:basics/sidebar -->
+    <div class="main-content row">
+        <div class="col-md-4 col-md-offset-4" id="mes" style="margin-top: 40px">
+            <h1>欢迎您</h1>
+        </div>
+    </div>
+
+    <!--底部-->
+    <!-- /.main-content -->
+    <div class="footer">
+        <div class="footer-inner">
+            <!-- #section:basics/footer -->
+            <div class="footer-content">
+                <span class="bigger-120"><span class="blue bolder">防灾科技学院应急管理学院</span>&copy;2019<span
+                        class="blue bolder"></span></span>
+            </div>
+            <!-- /section:basics/footer -->
+        </div>
+    </div>
+    <a href="javascript:;" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+</div>
+
+
+<!--申请新绩效模态框-->
+<form method="post" name="user" class="form-horizontal" role="form" style="margin: 20px;">
+    <div class="modal fade" id="add_Project_Modal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 id="projectTitle">
+                        添加绩效
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal">
+                        <!--userid为隐藏的input，便于update时的传值-->
+                        <input type="text" name="userID" hidden>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-3 control-label">绩效名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jobDescription" class="col-sm-3 control-label">绩效描述</label>
+                            <div class="col-sm-9">
+                                <textarea type="text" class="form-control" id="jobDescription"
+                                          name="jobDescription"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectYear1" class="col-sm-3 control-label">年度</label>
+                            <div class="col-sm-9">
+                                <select  class="form-control projectYear" id="projectYear1">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemName" class="col-sm-3 control-label">指标</label>
+                            <div class="col-sm-9">
+                                <select id="itemName" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="startTime" class="col-sm-3 control-label">开始时间</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control datetimepicker" id="startTime" name="startTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime" class="col-sm-3 control-label">结束时间</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control datetimepicker" id="endTime" name="endTime">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                    所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                    <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="submit_project()">提交
+                    </button>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--添加成员模态框-->
+<form method="post" name="user" class="form-horizontal" role="form" style="margin: 20px;">
+    <div class="modal fade" id="add_Member_Modal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+         aria-hidden="true" >
+        <div class="modal-dialog" style="width: 60%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        添加成员
+                    </h4>
+                </div>
+                <div class="modal-body" >
+                    <form action="" class="form-horizontal" id="memberForm">
+                        <!--userid为隐藏的input，便于update时的传值-->
+                        <input type="text" name="userID" hidden>
+                        <div class="form-group" id="memberInput" >
+                            <label class="col-sm-1  control-label">姓名</label>
+                            <div class="col-sm-2">
+                                <select id="teacherName" class="form-control">
+                                </select>
+                            </div>
+                            <label class="col-sm-2  control-label">工作描述</label>
+                            <div class="col-sm-3">
+                                <textarea  id="workDescription" class="form-control"></textarea>
+
+                            </div>
+                            <label class="col-sm-1  control-label">权重</label>
+                            <div class="col-sm-2">
+                                <input type="number" id="weight" class="form-control">
+
+                            </div>
+                            <div class="col-sm-1" style="text-align: center;line-height: 34px;">
+                                <a onclick="add_another_member_page()"><span class='glyphicon glyphicon-plus'></span></a>
+                            </div>
+
+                        </div>
+                        <!--<div class="form-group">-->
+                        <!--<label for="emergency_name" class="col-sm-2 col-sm-offset-1 control-label">权重</label>-->
+                        <!--<div class="col-sm-8">-->
+                        <!--<input type="text" id="weight" class="form-control">-->
+                        <!--</div>-->
+                        <!--</div>-->
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clear_mes()">关闭</button>
+                    <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                    所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                    <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="add_member()">提交
+                    </button>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--查看通过绩效明细模态框-->
+<form method="post" name="news" class="form-horizontal" role="form" style="margin: 20px;">
+    <div class="modal fade" id="view_Pass_Details_Modal" tabindex="-1" role="dialog"
+         aria-labelledby="updateModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="clear_mes()" data-dismiss="modal"
+                            aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" i>
+                        查看成员
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal" name="upfile" id="viewPassDetailsForm">
+                        <!--userid为隐藏的input，便于update时的传值-->
+                        <input type="text" id="userID2" name="userID" hidden>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<!--查看成员模态框-->
+<form method="post" name="news" class="form-horizontal" role="form" style="margin: 20px;">
+    <div class="modal fade" id="view_Details_Modal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"  data-dismiss="modal"
+                            aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" i>
+                        查看成员
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal" name="upfile" id="viewDetailsForm">
+                        <!--userid为隐藏的input，便于update时的传值-->
+                        <input type="text" id="check_member" name="userID" hidden>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+<!--查看驳回项目明细模态框-->
+<form method="post" name="news" class="form-horizontal" role="form" style="margin: 20px;">
+    <div class="modal fade" id="view_Reject_Details_Modal" tabindex="-1" role="dialog"
+         aria-labelledby="updateModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        驳回理由
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal" name="upfile" id="" hidden="hidden">
+                        <!--userid为隐藏的input，便于update时的传值-->
+                        <input type="text" id="reject_hidden" name="userID" hidden>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="./assets/js/bootstrap.js"></script>
+<script src="./assets/js/dropzone.js"></script>
+<!-- ace scripts -->
+<script src="./assets/js/ace/elements.scroller.js"></script>
+<script src="./assets/js/ace/elements.colorpicker.js"></script>
+<script src="./assets/js/ace/elements.fileinput.js"></script>
+<script src="./assets/js/ace/elements.typeahead.js"></script>
+<script src="./assets/js/ace/elements.wysiwyg.js"></script>
+<script src="./assets/js/ace/elements.spinner.js"></script>
+<script src="./assets/js/ace/elements.treeview.js"></script>
+<script src="./assets/js/ace/elements.wizard.js"></script>
+<script src="./assets/js/ace/elements.aside.js"></script>
+<script src="./assets/js/ace/ace.js"></script>
+<!--<script src="./assets/js/ace/ace.ajax-content.js"></script>-->
+<script src="./assets/js/ace/ace.touch-drag.js"></script>
+<script src="./assets/js/ace/ace.sidebar.js"></script>
+<script src="./assets/js/ace/ace.sidebar-scroll-1.js"></script>
+<script src="./assets/js/ace/ace.submenu-hover.js"></script>
+<script src="./assets/js/ace/ace.widget-box.js"></script>
+<script src="./assets/js/ace/ace.settings.js"></script>
+<script src="./assets/js/ace/ace.settings-rtl.js"></script>
+<script src="./assets/js/ace/ace.settings-skin.js"></script>
+<script src="./assets/js/ace/ace.widget-on-reload.js"></script>
+<script src="./assets/js/ace/ace.searchbox-autocomplete.js"></script>
+<script src="./assets/js/date-time/moment.js"></script>
+<script src="./assets/js/date-time/bootstrap-datetimepicker.js"></script>
+<!-- <script src="./assets/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script> -->
+<script src="./assets/js/bootstrap-table.min.js"></script>
+<script src="./assets/js/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="./assets/js/jquery.validate.js"></script>
+<script>
+    $(function () {
+
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-DD',
+            locale: moment.locale('zh-cn')
+        });
+    });
+
+</script>
+<script>
+    var cookie = getCookie("user_idno");
+
+    //修改密码页面
+    function chang_pwd_page() {
+      $("#mes").removeClass();
+      $("#mes").addClass("col-md-4 col-md-offset-4");
+      $("#mes").html("<form class='form-horizontal'>\n" +
+          "  <div class=\"form-group\">\n" +
+          "    <label for=\"exampleInputEmail1\"><b>旧密码</b></label>\n" +
+          "    <input type=\"password\" class=\"form-control col-md-3\" id=\"old_pwd\" placeholder=\"旧密码\">\n" +
+          "  </div>\n" +
+          "  <div class=\"form-group\">\n" +
+          "    <label for=\"exampleInputPassword1\"><b>新密码</b></label>\n" +
+          "    <input type=\"password\" class=\"form-control col-md-3\" id=\"new_pwd1\" placeholder=\"新密码\">\n" +
+          "  </div>\n" +
+          "  <div class=\"form-group\">\n" +
+          "    <label for=\"exampleInputPassword1\"><b>确认密码</b></label>\n" +
+          "    <input type=\"password\" class=\"form-control col-md-3\" id=\"new_pwd2\" placeholder=\"新密码\">\n" +
+          "  </div>\n" +
+          "  <div class=\"form-group text-center\">\n" +
+          "  <button type=\"button\" class=\"btn btn-success btn-lg\" onclick='change_pwd()'>确认修改</button>\n" +
+          "  </div>\n" +
+          "</form>");
+    }
+
+    //修改密码功能实现
+    function change_pwd() {
+      var new_pwd1 = $("#new_pwd1").val();
+      var new_pwd2 = $("#new_pwd2").val();
+      var old_pwd = $("#old_pwd").val();
+      if (new_pwd1 == "" || new_pwd2 == "" || old_pwd == "") {
+        alert("请将信息填写完整");
+      } else {
+        if (new_pwd1 !== new_pwd2) {
+          alert("两次输入密码不一致,请重新输入");
+        } else {
+          var mes = {
+            "tId": cookie,
+            "passwd": old_pwd,
+            "new_passwd": new_pwd1
+          };
+          console.log(mes);
+          var jsonData = JSON.stringify(mes);
+          $.ajax({
+            type: "post",
+            url: "root/update_Passwd",
+            data: jsonData,
+            //dataType:"json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+              alert(result);
+              $("#new_pwd1").val("");
+              $("#new_pwd2").val("");
+              $("#old_pwd").val("");
+            },
+            error: function (result) {
+              console.log(result);
+            }
+          });
+        }
+      }
+
+    }
+
+    //绩效管理页面
+    function manage_project_page() {
+      $("#mes").removeClass();
+      $("#mes").addClass("col-md-12");
+      $("#mes").html("<div id=\"toolbar\" class=\"btn-group\">\n" +
+          "<button type=\"button\" class=\"btn btn-success btn-lg\" data-toggle='modal' onclick='resetForm()' data-target='#add_Project_Modal'>\n" +
+          "  申请新绩效\n" +
+          "</button>" +
+          " <select class='projectYear' id='projectYear2'  ></select>"+
+          "\t</div>\t\n" +
+          "<table id='tb_departments'></table>");
+      //这里先静态加载了下拉框选项
+      $.ajax({
+        type: "post",
+        url: "teacher/item",
+        dataType: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (result) {
+          let tmp = "";
+          result.forEach(item =>{
+            tmp += item.isUsed? `<option value="${item.itemId}">${item.itemName}</option>`:`<option style='color: #ff0000' value="${item.itemId}" disabled>${item.itemName}</option>`;
+          });
+          $("#itemName").html(tmp);
+        },
+        error: function (result) {
+          console.log("网络错误")
+        }
+      });
+      //加载添加绩效模态框的选项
+      $.ajax({
+        type: "post",
+        url: "teacher/currentYear",
+        dataType: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (result) {
+          let tmp = "";
+          result.forEach(item =>{
+            tmp += item.isUsed? `<option value="${item.projectYear}" >${item.projectYear}</option>`:`<option style='color: #ff0000' value="${item.projectYear}" disabled>${item.projectYear}</option>`;
+          });
+          $(".projectYear").html(tmp);
+          $( "#projectYear2" ).val(result[0].projectYear)
+        },
+        error: function (result) {
+        }
+
+      });
+      var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+          $('#tb_departments').bootstrapTable({
+            url: 'teacher/T_project',         //请求后台的URL（*）
+            method: 'post',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            queryParams: oTableInit.queryParams,//传递参数（*）
+            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
+            search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: false,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: [
+              {
+                field: 'projectId',
+                title: '绩效id',
+                visible: false
+              },
+              {
+                field: 'name',
+                title: '绩效名称'
+              }, {
+                field: 'jobDescription',
+                title: '绩效描述'
+              }, {
+                field: 'itemName',
+                title: '指标名'
+              },
+              {
+                field: 'projectYear',
+                title: '年度'
+              }, {
+                field: 'startTime',
+                title: '开始时间',
+                formatter: timeFormatter
+              }, {
+                field: 'endTime',
+                title: '结束时间',
+                formatter: timeFormatter
+              }, {
+                field: 'status',
+                title: '状态'
+              }, {
+                field: 'update_project',
+                title: '项目内容',
+                formatter:function (value, row, index) {
+                  var tId = row.tId;
+                  var result = "";
+                  if (row.status === "通过"){
+                    result += "<a><span class='glyphicon glyphicon-ban-circle' title='已通过，不可修改'></span></a>"
+                    return result;
+                  }else {
+                    result += "<a  class='btn btn-default btn-lg' data-toggle='modal' data-target='#add_Project_Modal' onclick=\"find_project('" + row.projectId + "', view='view')\" title=''><span class='glyphicon glyphicon-edit'></span></a>";
+                    return result;
+                  }
+                }
+              },{
+                title: '查看成员',
+                formatter: function (value,row,index) {
+                  return "<button data-toggle='modal' data-target='#view_Details_Modal' onclick='view_details(" + row.projectId + ")'><span class='glyphicon glyphicon-search'></span></button>"
+                }
+              }, {
+                field: "test",
+                title: "添加成员",
+                formatter: function (value, row, index) {
+                  console.log(row.projectId);
+                  if (row.status === "未审核"){
+                    return "<a data-toggle='modal'  data-target='#add_Member_Modal' onclick='add_project_member_page(" + row.projectId +")'><span class='glyphicon glyphicon-plus'></span></a>";
+                  } else{
+                    return "<a><span class='glyphicon glyphicon-remove' title='未审核，不可添加'></span></a>"
+                  }
+                }
+              },
+              {
+                field: "",
+                title: "驳回理由",
+                formatter: reject_project_details
+              }
+            ]
+          });
+        };
+
+        //得到查询的参数啊
+
+        oTableInit.queryParams = function (params) {
+          //这里给年度选中第一个值
+          var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+            limit: params.limit,   //页面大小
+            offset: params.offset,  //页码
+            tId: cookie,
+            projectYear: $("#projectYear2").val()
+          };
+          console.log(temp)
+          return temp;
+        };
+        return oTableInit;
+      };
+
+      var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+        oInit.Init = function () {
+          //初始化页面上面的按钮事件
+        };
+        return oInit;
+      };
+
+      $(function () {
+
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        $("#mes .projectYear").click(function () {
+          //点击查询是 使用刷新 处理刷新参数
+          $('#tb_departments').bootstrapTable('refresh');
+        });
+      });
+
+    }
+
+    //提交绩效
+    function submit_project() {
+      let projectYear = $("#projectYear1 option:selected").val();
+      let itemName = $("#itemName").find("option:checked").text();
+      let itemId = $("#itemName option:selected").val();
+      let startTime = new Date($("#startTime").val());
+      let endTime = new Date($("#endTime").val());
+      let jobDescription = $("#jobDescription").val();
+      let name = $("#name").val();
+      let tmp = {
+        "tId": cookie,
+        "name": name,
+        "itemId": itemId,
+        "itemName": itemName,
+        "projectYear": projectYear,
+        "startTime": startTime,
+        "endTime": endTime,
+        "jobDescription": jobDescription
+      };
+      console.log(tmp)
+      let jsonData = JSON.stringify(tmp);
+
+      if ($("#projectTitle").html().trim() == "添加绩效") {
+        //
+        $.ajax({
+          type: "post",
+          data: jsonData,
+          url: "teacher/Sub_Project",
+          contentType: "application/json;charset=UTF-8",
+          success: function (result) {
+            alert("提交成功");
+            $("#tb_departments").bootstrapTable('refresh');
+          },
+          error: function (result) {
+          }
+        });
+      }else {
+        $.ajax({
+          type: "post",
+          data: jsonData,
+          url: "teacher/edit_Project",
+          contentType: "application/json;charset=UTF-8",
+          success: function (result) {
+            alert("修改成功");
+            $("#tb_departments").bootstrapTable('refresh');
+          },
+          error: function (result) {
+          }
+        });
+      }
+
+
+    }
+
+    //绩效公示页面
+    function show_project_page() {
+      $("#mes").removeClass();
+      $("#mes").addClass("col-md-12");
+      $("#mes").html("<table id='tb_departments'></table>");
+      var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+          $('#tb_departments').bootstrapTable({
+            url: 'root/Pass',         //请求后台的URL（*）
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            singleSelect: true,                //是否单选
+            //queryParams: oTableInit.queryParams,//传递参数（*）
+            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
+            search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: false,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            //uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: [{
+              field: 'projectId',
+              title: '绩效id',
+              visible: false
+            },
+              {
+                field: 'name',
+                title: '绩效名称'
+              }, {
+                field: 'projectYear',
+                title: '年度'
+              }, {
+                field: 'jobDescription',
+                title: '工作描述'
+              }, {
+                field: 'startTime',
+                title: '开始时间',
+                formatter: timeFormatter
+              }, {
+                field: 'endTime',
+                title: '结束时间',
+                formatter: timeFormatter
+              }, {
+                field: 'createTime',
+                title: '创建时间',
+                formatter: timeFormatter
+              },
+              // {
+              //     field: "submitter",
+              //     title: "申报人"
+              // },
+              {
+                field: "",
+                title: "查看成员",formatter: function (value,row,index) {
+                  return "<button data-toggle='modal' data-target='#view_Details_Modal' onclick='view_details(" + row.projectId + ")'><span class='glyphicon glyphicon-search'></span></button>"
+                }
+                //formatter: pass_project_details
+              }]
+          });
+        };
+
+        //得到查询的参数啊
+
+        oTableInit.queryParams = function (params) {
+          var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+            limit: params.limit,   //页面大小
+            offset: params.offset,  //页码
+
+          };
+          return temp;
+        };
+        return oTableInit;
+      };
+
+
+      var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+        oInit.Init = function () {
+          //初始化页面上面的按钮事件
+        };
+        return oInit;
+      };
+      $(function () {
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+      });
+    }
+
+
+
+
+
+
+
+    var projectId;
+    var teacherList;//定义全局变量教师列表
+    function add_project_member_page(project_id) {
+        console.log("这个属性为:"+project_id);
+        projectId = project_id;
+        $.ajax({
+            type: "get",
+            url: "root/Teacher",         //获取老师姓名的页面
+            dataType:"json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+                teacherList = result;
+                console.log(result);
+                var _html = "";
+                for (var i = 0;i<teacherList.length;i++){
+                    _html += "<option value="+teacherList[i]['tId']+">"+teacherList[i]['tName']+teacherList[i]['tId']+"</option>";
+                }
+                $("#teacherName").append(_html);
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+    var count = 0;//定义全局变量查看添加次数;
+
+    function add_another_member_page() {
+        count += 1;
+        $("#memberInput").after("<div class=\"form-group delete\">\n" +
+            "            <label  class=\"col-sm-1  control-label\">姓名</label>\n" +
+            "            <div class=\"col-sm-2\">\n" +
+            "            <select id=\"teacherName"+count+"\" class=\"form-control\">\n" +
+            "            </select>\n" +
+            "            </div>\n" +
+            "<label class=\"col-sm-2  control-label\">工作描述</label>\n" +
+            "                            <div class=\"col-sm-3\">\n" +
+            "                                <textarea  id=\"workDescription"+count+"\" class=\"form-control\"></textarea>\n" +
+            "\n" +
+            "                            </div>"+
+            "            <label  class=\"col-sm-1  control-label\">权重</label>\n" +
+            "            <div class=\"col-sm-2\">\n" +
+            "            <input type=\"number\" id=\"weight"+count+"\" class=\"form-control\">\n" +
+            "\n" +
+            "            </div>\n" +
+            "\n" +
+            "        </div>")
+
+        var _html = "";
+        for (var i = 0;i<teacherList.length;i++){
+            _html += "<option value="+teacherList[i]['tId']+">"+teacherList[i]['tName']+teacherList[i]['tId']+"</option>";
+        }
+        $("#teacherName"+count).append(_html);
+    }
+
+    function clear_mes() {
+        $("div").remove(".delete");
+        $("#teacherName").val("");
+        $("#weight").val("");
+    }
+
+    function add_member() {
+        var teachers = [];
+        var teacher = {
+            "projectId":parseInt(projectId),
+            "teacherId":$("select#teacherName option:checked").val(),
+            "explain":$("textarea#workDescription").val(),
+            "weight":parseFloat($("#weight").val())
+        };
+        teachers.push(teacher);
+        if (count){
+            for(var i = 1; i<=count;i++){
+                var teacher1 = {
+                    "projectId":parseInt(projectId),
+                    "teacherId":$("select#teacherName"+i+" option:checked").val(),
+                    "explain":$("textarea#workDescription"+i).val(),
+                    "weight":parseFloat($("#weight"+i).val())
+                };
+                teachers.push(teacher1);
+            }
+        }
+        var jsonData = JSON.stringify(teachers);
+        console.log(jsonData);
+        $.ajax({
+            type: "post",
+            data: jsonData,
+            url: "teacher/Sub_Projectmember",
+            //dataType:"json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+                alert("提交成功");
+                console.log(result);
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        clear_mes();
+    }
+
+
+
+    function view_details(projectId) {
+      /*
+      *2019/11/15 16:56
+      *todo-bear 这里接后台查看成员的接口
+      */
+      var mes = {"projectId": projectId};
+      var jsonData = JSON.stringify(mes);
+      $.ajax({
+        type: "post",
+        url: "root/Pass_Detailed",
+        data: jsonData,
+        dataType:"json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (result) {
+            console.log(result)
+          for (var i = 0; i< result.length;i++){
+            $("input#check_member").after(
+                "<div class=\"form-group delete\" >\n" +
+                "                                <label for=\"projectYear\" class=\"col-sm-1  control-label\">教师ID:</label>\n" +
+                "                                <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].teacherId+
+                "                                </div>\n" +
+                "                                <label for=\"projectYear\" class=\"col-sm-2 col-sm-offset-1 control-label\">教师名:</label>\n" +
+                "                                <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].tName+
+                "                                </div>\n" +
+                "                                <label for=\"projectYear\" class=\"col-sm-1  control-label\">工作描述:</label>\n" +
+                "                                <div class=\"col-sm-5\" style='line-height: 34px'>\n" +result[i].explain+
+                "                                </div>\n" +
+                "                                <label for=\"projectYear\" class=\"col-sm-1  control-label\">权重:</label>\n" +
+                "                                <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].weight+
+                "                                </div>\n" +
+                "                            </div>"
+            )
+          }
+        },
+        error: function (result) {
+
+        }
+
+      });
+
+    }
+    $('#view_Details_Modal').on('hidden.bs.modal', function (e) {
+      // do something...
+      clear_mes()
+    });
+    function clear_mes() {
+      $("div").remove(".delete");
+
+    }
+
+    function pass_project_details(value, row, index) {
+        return "<button data-toggle='modal' data-target='#view_Pass_Details_Modal' onclick='view_pass_details(" + row.projectId + ")'><span class='glyphicon glyphicon-search'></span></button>"
+    }
+
+    function view_pass_details(projectId) {
+        var mes = {"projectId": projectId};
+        console.log("通过的绩效id:" + projectId);
+        var jsonData = JSON.stringify(mes);
+        $.ajax({
+            type: "post",
+            url: "root/Pass_Detailed",
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+                console.log(result);
+                var _html = "";
+                for (var i = 0; i < result.length; i++) {
+                    _html += "<div class=\"form-group delete\">\n" +
+                        "                    <label  class=\"col-sm-2  control-label\">教师YID</label>\n" +
+                        "                    <div class=\"col-sm-2\" style='line-height: 32px'>" + result[i]['teacherId'] + "</div>\n" +
+                        "                    <label  class=\"col-sm-2  control-label\">权重</label>\n" +
+                        "                    <div class=\"col-sm-2\" style='line-height: 32px'>" + result[i]['weight'] + "</div>\n" +
+                        "                    <label  class=\"col-sm-2  control-label\">分数</label>\n" +
+                        "                    <div class=\"col-sm-2\" style='line-height: 32px'>" + result[i]['score'] + "</div>\n" +
+                        "                    </div>"
+                }
+                ;
+                $("#userID2").after(_html);
+            },
+            error: function (result) {
+                console.log(result);
+            }
+
+        });
+    }
+
+    function clear_mes() {
+        $("div").remove(".delete");
+
+    }
+
+    //按年度统计业绩
+    function item_count_page() {
+        var projectYear;
+        $("#mes").removeClass();
+        $("#mes").addClass("col-md-12");
+        $("#mes").html("年度选择:<select id='projectYear' ></select><button class='btn btn-primary' onclick='project_page()'>确认</button><table id='tb_departments'></table>");
+        $.ajax({
+            type: "post",
+            url: "teacher/currentYear",
+            async: false,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+                projectYear = result[0].projectYear;
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].isUsed === 0) {
+                        var projectYear_option = $("<option disabled style='color: red' value=" + result[i].projectYear + ">" + result[i].projectYear + "</option>")
+                    } else if (result[i].isUsed === 1) {
+                        var projectYear_option = $("<option value=" + result[i].projectYear + ">" + result[i].projectYear + "</option>")
+                    }
+
+                    $("#projectYear").append(projectYear_option)
+                }
+            },
+            error: function (result) {
+            }
+        });
+
+        var TableInit = function () {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#tb_departments').bootstrapTable({
+                    url: 'root/projectYear_score',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    queryParams: oTableInit.queryParams,//传递参数（*）
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
+                    search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: false,
+                    showColumns: true,                  //是否显示所有的列
+                    showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+                    //height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                    // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: [
+                        {
+                            field: 'teacherId',
+                            title: '教师ID'
+                        }, {
+                            field: 'sumscore',
+                            title: '总业绩'
+
+                        },{
+                            field: 'explain',
+                            title: '工作描述'
+
+                        }],
+                });
+            };
+            console.log(projectYear)
+            oTableInit.queryParams = function (params) {
+                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                    limit: params.limit,   //页面大小
+                    offset: params.offset,  //页码
+                    projectYear: projectYear
+                };
+                return temp;
+            };
+            return oTableInit;
+        };
+
+        var ButtonInit = function () {
+            var oInit = new Object();
+            var postdata = {};
+            oInit.Init = function () {
+                //初始化页面上面的按钮事件
+            };
+            return oInit;
+        };
+
+        $(function () {
+
+            //1.初始化Table
+            var oTable = new TableInit();
+            oTable.Init();
+
+            //2.初始化Button的点击事件
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+
+        });
+    }
+    //时间处理函数
+    function timeFormatter(value, row, index) {
+        if (value != null) {
+            var mes = new Date(value);
+            return mes.getFullYear().toString() + "-" + (mes.getMonth() + 1).toString() + "-" + mes.getDate().toString();
+        }
+    }
+    function time_transform(mes){
+        return mes.getFullYear().toString() + "-" + (mes.getMonth() + 1).toString() + "-" + mes.getDate().toString();
+    }
+
+    //查看驳回理由
+    function reject_project_details(value, row, index) {
+        if (row.status === "驳回"){
+            return "<button data-toggle='modal' data-target='#view_Reject_Details_Modal' onclick='view_reject_details(" + row.projectId + ")'><span class='glyphicon glyphicon-search'></span></button>"
+        } else{
+            return "<a><span class='glyphicon glyphicon-warning-sign' title='未审核，不可操作'></span></a>"
+        }
+        // return "<button data-toggle='modal' data-target='#view_Reject_Details_Modal' onclick='view_reject_details(" + row.projectId + ")'><span class='glyphicon glyphicon-search'></span></button>"
+    }
+
+    function view_reject_details(projectId) {
+
+        var mes = {"projectId": projectId};
+        var jsonData = JSON.stringify(mes);
+        $.ajax({
+            type: "post",
+            url: "root/Refuse_Detailed",
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+                var date = new Date(result[0]['createTime']);
+                var month = date.getMonth() + 1;
+                var time = date.getFullYear() + "-" + month + "-" + date.getDay();
+                var _html = "<div class=\"form-group delete\">\n" +
+                    "                    <label  class=\"col-sm-3  control-label\">驳回理由:</label>\n" +
+                    "                    <div class=\"col-sm-3\" style='line-height: 34px'>" + result[0]['reason'] + "</div>\n" +
+                    "                    <label  class=\"col-sm-3  control-label\">创建时间:</label>\n" +
+                    "                    <div class=\"col-sm-3\" style='line-height: 34px'>" + time + "</div>\n" +
+                    "                    </div>";
+                $("#reject_hidden").after(_html);
+                $("#reject_hidden").remove();
+            },
+            error: function (result) {
+                console.log(result);
+            }
+
+        });
+    }
+
+    function Refuse_Detailed(projectId) {
+        var mes = {"projectId": projectId};
+        var jsonData = JSON.stringify(mes);
+        $.ajax({
+            type: "post",
+            url: "root/Refuse_Detailed",
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+                var time = result[0]['createTime'];
+                var date = new Date(result[0]['createTime']);
+                var month = date.getMonth() + 1;
+                var time = date.getFullYear() + "-" + month + "-" + date.getDay();
+                var _html = "<div class=\"form-group delete\">\n" +
+                    "                    <label  class=\"col-sm-3  control-label\">驳回理由:</label>\n" +
+                    "                    <div class=\"col-sm-3\" style='line-height: 34px'>" + result[0]['reason'] + "</div>\n" +
+                    "                    <label  class=\"col-sm-3  control-label\">创建时间:</label>\n" +
+                    "                    <div class=\"col-sm-3\" style='line-height: 34px'>" + time + "</div>\n" +
+                    "                    </div>";
+                $("#userID3").after(_html);
+            },
+            error: function (result) {
+                console.log(result);
+            }
+
+        });
+    }
+
+    //项目内容页面
+    function find_project(projectId) {
+        $("#projectTitle").html("修改绩效");
+        let mes = {
+             "projectId":projectId
+        };
+        let jsonData = JSON.stringify(mes);
+        $.ajax({
+            type: "post",
+            url: "teacher/find_Project",
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+              form = result;
+                // $("#projectId").val(result.projectId)
+                $("#name").val(result.name);
+                $("#projectYear").val(result.projectYear);
+                $("#itemName").val(result.itemId);
+                $("#startTime").val(time_transform(new Date(result.startTime)));
+                $("#endTime").val(time_transform(new Date(result.endTime)));
+                $("#jobDescription").val(result.jobDescription);
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+
+    }
+
+    //情况绩效表单
+    function resetForm(){
+      $("#name").val("");
+      $("#jobDescription").val("");
+      $("#startTime").val("");
+      $("#endTime").val("");
+    }
+
+    //设置浏览器cookie
+    function setcookie(name, value) {
+      var cookie = document.cookie;
+      // cookie 默认的有效期是 会话时间 session 关闭浏览器就失效
+      var date = new Date();
+      var timeStamp = date.getTime() + 60 * 60 * 1000;
+      date.setTime(timeStamp);
+      // 毫秒 +  14 * 24 * 60 * 60 * 1000
+
+      document.cookie = name + "=" + value + "; expires=" + date.toUTCString() + ";path=/";
+      return true;
+    }
+
+    //注销
+    function logout() {
+      setcookie("user_idno", "null");
+      window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>
