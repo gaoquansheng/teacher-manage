@@ -124,4 +124,11 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Currentyear> getProjectYear() {
         return tm.getProjectYear();
     }
+
+    @Override
+    @Transactional
+    public void addProjectMembers(List<Projectmember> projectmembers, int projectId) {
+        tm.deleteProjectMembers(projectId);
+        tm.addProjectMembers(projectmembers,projectId);
+    }
 }

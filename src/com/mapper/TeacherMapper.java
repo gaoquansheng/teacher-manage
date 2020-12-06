@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.entity.*;
+import org.apache.ibatis.annotations.Param;
+
 public interface TeacherMapper {
     List <Project> t_Project(Project project);
     List <Projectmember> Pass_Detailed(int projectId);
@@ -23,4 +25,7 @@ public interface TeacherMapper {
     List<Currentyear> getProjectYear();
 
     int deleteProjectRefuse(int projectId);
+
+    void addProjectMembers(@Param("projectmembers") List<Projectmember> projectmembers, @Param("projectId") int projectId);
+    void deleteProjectMembers(int projectId);
 }

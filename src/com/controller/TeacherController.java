@@ -166,8 +166,7 @@ public class TeacherController {
     @ResponseBody
     @RequestMapping("/addProjectMembers/{projectId}")
     public void addProjectMembers(@RequestBody List<Projectmember> projectmembers, @PathVariable("projectId") int projectId ){
-        System.out.println(projectmembers);
-        System.out.println(projectId);
+        ts.addProjectMembers(projectmembers,projectId);
     }
 
 

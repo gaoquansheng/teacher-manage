@@ -26,5 +26,6 @@ public interface TeacherService {
     String edit_project(Project project);
 
     List<Currentyear> getProjectYear();
+    void addProjectMembers(List<Projectmember> projectmembers,int projectId);
     // Teacher teacher_info(String teacherId);
 }

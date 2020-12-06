@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.RootMapper">
+
+    <!-- 登陆验证 -->
+    <select id="Login" resultType="Teacher" >
+	    	SELECT * FROM teacher where tId=#{tId} and passwd=#{passwd}
+	    </select>
+
+	<select id="isEnabled" resultType="Teacher" parameterType="Teacher" >
+	    	SELECT * FROM teacher where tId=#{tId} and enable=1
+	    </select>
+    <!--添加教师  -->
+    <insert id="Addteacher"  parameterType="Teacher">
+	         insert into teacher (tId,passwd,tName,administrators,aprt,email,enable) values (#{tId},'123456',#{tName},'0',#{aprt},#{email},1)
+	    </insert>
+    <!--查看教师列表-->
+    <select id="Teacher" resultType="Teacher" >
+	    	SELECT * FROM teacher
+	    </select>
+    <!--查看未审核的项目-->
+    <select id="Project" resultType="Project" >
+	    	SELECT * FROM project where status ='未审核'
+	    </select>
+    <!--查询通过审核的项目  -->
+	<select id="Pass" resultType="Project" >
+	    	SELECT * FROM project where status='通过'
+	    </select>
+	<!--查询项目成员-->
+	<select id="getProjectMembers" resultType="Projectmember" parameterType="int">
+	    	SELECT * FROM  teacher,projectmember WHERE projectmember.projectId=#{projectId} and projectmember.teacherId = teacher.tId
+	    </select>
+    <!--查询未通过审核的项目 -->
+	<select id="Refuse" resultType="Project" >
+	    	SELECT * FROM project where status="驳回"
+	    </select>
+    <select id="Refuse_Detailed" resultType="Projectrefuse" parameterType="int" >
+	    	select * from projectrefuse where projectId=#{projectId}
+	    </select>
+    <!--审核打分  -->
+    <update id="insert_Pass"  parameterType="Projectmember">
+	         update Projectmember set score=#{score} where teacherId=#{teacherId} and projectId=#{projectId}
+	    </update>
+    <!--插入驳回的项目  -->
+    <insert id="insert_Refuse"  parameterType="Projectrefuse">
+	         insert into projectrefuse (projectId,reason,createTime,name,submitter) values (#{projectId},#{reason},#{createTime},#{name},#{submitter})
+	    </insert>
+    <!-- 将状态变为通过 -->
+    <update id="update_Pass" parameterType="int" >
+	    	update Project set status='通过' where projectId=#{projectId}
+	    </update>
+    <!-- 将状态变为驳回 -->
+    <update id="update_Refuse" parameterType="int" >
+	    	update Project set status='驳回' where projectId=#{projectId}
+	    </update>
+    <!--添加管理员  -->
+    <insert id="Addad"  parameterType="Teacher">
+	         insert into teacher (tId,passwd,tName,administrators,aprt,emali) values (#{tId},'123456',#{tName},'1',#{aprt},#{email})
+	    </insert>
+    <!-- 找回密码操作 -->
+    <select id="Find_passwd" parameterType="String" resultType="Teacher" >
+	    	SELECT * FROM teacher where email=(#{email})
+	    </select>
+    <update id="Send" parameterType="Teacher" >
+	    	update teacher set passwd=#{newpasswd} where email=#{email}
+	    </update>
+    <!--用户权限验证-->
+    <select id="Jurisdiction" parameterType="String" resultType="Teacher" >
+	    	SELECT * FROM teacher where tId=#{tId}
+	    </select>
+	<!-- 修改密码 -->
+	<update id="update_passwd" parameterType="Teacher" >
+	    	update teacher set passwd=#{new_passwd} where tId=#{tId}
+	    </update>
+	<!-- 添加季度 -->
+	<insert id="Add_year"  parameterType="CurrentYear">
+	         insert into currentyear (projectYear,startTime,endTime,isUsed) values (#{projectYear},#{startTime},#{endTime},'1')
+	    </insert>
+	<!-- 添加指标 -->
+	<insert id="Add_item"  parameterType="Item">
+	         insert into item (itemId,createTime,creator,isUsed) values (#{itemId},#{createTime},#{creator},'1')
+	    </insert>
+	<!-- 停用指标 -->
+	<update id="Stop_item" parameterType="Item" >
+	    	update item set isUsed='0' where itemId=#{itemId}
+	    </update>
+	<!-- 启用指标 -->
+	<update id="Used_item" parameterType="Item" >
+	    	update item set isUsed='1' where itemId=#{itemId}
+	    </update>
+	<!-- 开放季度 -->
+	<update id="Stop_year" parameterType="Currentyear" >
+	    	update currentyear set isUsed='0' where projectYear=#{projectYear}
+	    </update>
+	<!-- 关闭季度 -->
+	<update id="Used_year" parameterType="Currentyear" >
+	    	update currentyear set isUsed='1' where projectYear=#{projectYear}
+	    </update>
+	<!-- 查询教师总分 -->
+	<select id="teacher_score" resultType="Projectmember" >
+	    	SELECT teacherId,SUM(score) as sumscore from projectmember GROUP BY teacherId
+	    </select>
+	<select id="projectYear_score" resultType="Projectmember" parameterType="Project">
+		SELECT teacherId,SUM(score) as sumscore from projectmember where projectId in(SELECT projectId FROM `project` where projectYear = #{projectYear}) GROUP BY  teacherId
+	</select>
+</mapper>
