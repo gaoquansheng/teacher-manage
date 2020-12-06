@@ -402,7 +402,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title" i>
-                        查看成员
+                        成员管理
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -412,7 +412,14 @@
 
                     </form>
                 </div>
-
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
+                  所以把按钮类型改为input，再手动调用封装好的验证函数-->
+                  <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="submitProjectMembers">提交
+                  </button>
+                  <span></span>
+                </div>
             </div>
         </div>
     </div>
@@ -780,6 +787,12 @@
 
     }
 
+
+    function submitProjectMembers(){
+
+    }
+
+
     //绩效公示页面
     function show_project_page() {
       $("#mes").removeClass();
@@ -1014,22 +1027,34 @@
             console.log(result)
           for (var i = 0; i< result.length;i++){
             $("input#check_member").after(
-                "<div class=\"form-group delete\" >\n" +
-                "  <label for=\"projectYear\" class=\"col-sm-1  control-label\">教师ID:</label>\n" +
-                "  div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].teacherId+
-                "  </div>\n" +
-                " <label for=\"projectYear\" class=\"col-sm-2 col-sm-offset-1 control-label\">教师名:</label>\n" +
-                " <div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].tName+
-                "</div>\n" +
-                " <label for=\"projectYear\" class=\"col-sm-1  control-label\">工作描述:</label>\n" +
-                "  <div class=\"col-sm-5\" style='line-height: 34px'>\n" +result[i].explain+
-                " </div>\n" +
-                "<label for=\"projectYear\" class=\"col-sm-1  control-label\">权重:</label>\n" +
-                "<div class=\"col-sm-2\" style='line-height: 34px'>\n" +result[i].weight+
-                "</div>\n" +
-                "</div>"
+                `<div class="form-group delete">
+                  教师:<select class="teacherList"></select>
+                  描述:<input value="${result[i].explain}">
+                  权重:<input value="${result[i].weight}">
+                  <a onclick="newMemberLine()"><span class='glyphicon glyphicon-plus-sign'></span></a>
+                  <a><span class='glyphicon glyphicon-minus-sign'></span></a>
+                </div>`
             )
+            // $.ajax({
+            //   type: "get",
+            //   url: "teacher/allteacher",
+            //   dataType:"json",
+            //   success: function (res) {
+            //     console.log(res);
+            //     let tmp = "";
+            //     res.forEach(item =>{
+            //       if (item.tId == result[i].teacherId){
+            //         tmp += `<option value="${item.tId}" selected>${item.tId}-${item.tName}</option>`
+            //       }else {
+            //         tmp += `<option value="${item.tId}">${item.tId}-${item.tName}</option>`
+            //       }
+            //
+            //     });
+            //     $(".teacherList").html(tmp)
+            //   }
+            // })
           }
+          //获取所有的教师信息
         },
         error: function (result) {
 
@@ -1037,7 +1062,16 @@
 
       });
 
+
     }
+
+    function newMemberLine(){
+      console.log($("input#check_member"))
+
+      // $("input#check_member").after(
+      //     $(".teacherList")[0])
+    }
+
     $('#view_Details_Modal').on('hidden.bs.modal', function (e) {
       // do something...
       clear_mes()

@@ -6,6 +6,7 @@ import com.service.TeacherService;
 //import com.sun.javafx.scene.web.Debugger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,6 +60,7 @@ public class TeacherController {
     }
     @ResponseBody
     @RequestMapping("/Sub_Project")
+    @Transactional
     public int sub_project(@RequestBody Project project,Projectmember projectmember){
         Nowtime nn=new Nowtime();
         Date time= null;
@@ -69,11 +71,18 @@ public class TeacherController {
         }
         project.setCreateTime(time);
         ts.sub_Project(project);
+
         String tid=project.gettId();
         int projectId=project.getProjectId();
+
         projectmember.setProjectId(projectId);
         projectmember.setTeacherId(tid);
+        projectmember.setCreateTime(new Date());
+        projectmember.setExplain(project.getJobDescription());
+        projectmember.setWeight(1);
+        projectmember.setCreator(project.gettId());
         ts.sub_Projectmember(projectmember);
+
         return project.getProjectId();
     }
 
