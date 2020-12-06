@@ -53,7 +53,7 @@ public class TeacherController {
     @ResponseBody
     @RequestMapping("/edit_Project")
     public String edit_Project(@RequestBody Project project){
-
+        System.out.println("controller");
        return ts.edit_project(project);
 
 

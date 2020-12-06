@@ -5,6 +5,7 @@ import com.mapper.TeacherMapper;
 import com.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -85,6 +86,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public String edit_teacher(Teacher teacher) {
         int i = tm.edit_teacher(teacher);
+
         if (i == 1){
             return "修改成功";
         }else {
@@ -104,8 +106,12 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional
     public String edit_project(Project project) {
         int i = tm.edit_project(project);
+        int line = tm.deleteProjectRefuse(project.getProjectId());
+        System.out.println(line);
+        System.out.println("here");
         if (i == 1){
             return "修改成功";
         }else {

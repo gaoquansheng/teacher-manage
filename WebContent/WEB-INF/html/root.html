@@ -3079,7 +3079,28 @@
   function performance_count_page() {
     $("#mes").removeClass();
     $("#mes").addClass("col-md-12");
-    $("#mes").html("<table id='tb_departments'></table>");
+    $("#mes").html("年度选择:<select id='projectYear' ></select><table id='tb_departments'></table>");
+
+    $.ajax({
+      type: "post",
+      url: "teacher/currentYear",
+      async: false,
+      dataType: "json",
+      contentType: "application/json;charset=UTF-8",
+      success: function (result) {
+        projectYear = result[0].projectYear;
+        for (var i = 0; i < result.length; i++) {
+          if (result[i].isUsed === 0) {
+            var projectYear_option = $("<option disabled style='color: red' value=" + result[i].projectYear + ">" + result[i].projectYear + "</option>")
+          } else if (result[i].isUsed === 1) {
+            var projectYear_option = $("<option value=" + result[i].projectYear + ">" + result[i].projectYear + "</option>")
+          }
+          $("#projectYear").append(projectYear_option)
+        }
+      },
+      error: function (result) {
+      }
+    });
     var TableInit = function () {
       var oTableInit = new Object();
       //初始化Table
@@ -3127,14 +3148,14 @@
 
       //得到查询的参数啊
 
-      // oTableInit.queryParams = function (params) {
-      //     var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-      //         limit: params.limit,   //页面大小
-      //         offset: params.offset,  //页码
-      //
-      //     };
-      //     return temp;
-      // };
+      oTableInit.queryParams = function (params) {
+          var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+              limit: params.limit,   //页面大小
+              offset: params.offset,  //页码
+              projectYear: $("select#projectYear option:checked").val()
+          };
+          return temp;
+      };
       return oTableInit;
     };
 
@@ -3153,6 +3174,10 @@
       var oTable = new TableInit();
       oTable.Init();
 
+      $("#projectYear").click(function () {
+        //点击查询是 使用刷新 处理刷新参数
+        $('#tb_departments').bootstrapTable('refresh');
+      });
       //2.初始化Button的点击事件
       var oButtonInit = new ButtonInit();
       oButtonInit.Init();

@@ -316,7 +316,7 @@
                     </h4>
                 </div>
                 <div class="modal-body" >
-                    <form action="" class="form-horizontal" id="memberForm">
+                    <form action="" class="form-horizontal" >
                         <!--userid为隐藏的input，便于update时的传值-->
                         <input type="text" name="userID" hidden>
                         <div class="form-group" id="memberInput" >
@@ -391,7 +391,7 @@
 </form>
 
 <!--查看成员模态框-->
-<form method="post" name="news" class="form-horizontal" role="form" style="margin: 20px;">
+<form method="post" name="news" id="memberForm" class="form-horizontal" role="form" style="margin: 20px;">
     <div class="modal fade" id="view_Details_Modal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" style="width: 80%;">
@@ -416,7 +416,7 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                   <!--type为submit时，会自动调用该表单的验证，但是不会调用自己定义的动态的username的验证，
                   所以把按钮类型改为input，再手动调用封装好的验证函数-->
-                  <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="submitProjectMembers">提交
+                  <button type="input" class="btn btn-primary" data-dismiss="modal" onclick="submitProjectMembers()">提交
                   </button>
                   <span></span>
                 </div>
@@ -789,7 +789,21 @@
 
 
     function submitProjectMembers(){
-
+      // console.log($(""))
+      // //这里获取所有的数据了
+      // var formData = [];
+      // var t = $("#memberForm").serializeArray();
+      // for (var i = 1;i<t.length;i++){
+      //   let tmp = {};
+      //   tmp.tId = t[i].value;
+      // }
+      // console.log(t)
+      // $.each(t, function() {
+      //   formData[this.name] = this.value;
+      // });
+      // console.log(JSON.stringify(formData));
+      console.log($("#tId1").val())
+      console.log($("#tId2").val())
     }
 
 
@@ -933,7 +947,7 @@
             }
         });
     }
-    var count = 0;//定义全局变量查看添加次数;
+    var count = 1;//定义全局变量查看添加次数;
 
     function add_another_member_page() {
         count += 1;
@@ -1009,12 +1023,22 @@
     }
 
 
-
     function view_details(projectId) {
       /*
       *2019/11/15 16:56
       *todo-bear 这里接后台查看成员的接口
       */
+      count = 1;
+      let teacherList = [];
+      let _this = this;
+      $.ajax({
+        type: "get",
+        url: "teacher/allteacher",
+        dataType:"json",
+        success: function (res) {
+          _this.teacherList = res;
+        }
+      })
       var mes = {"projectId": projectId};
       var jsonData = JSON.stringify(mes);
       $.ajax({
@@ -1027,32 +1051,24 @@
           console.log(result)
           for (var i = 0; i< result.length;i++){
             $("input#check_member").after(
-                `<div class="form-group delete">
-                  教师:<select class="teacherList"></select>
-                  描述:<input value="${result[i].explain}">
-                  权重:<input value="${result[i].weight}">
-                  <a onclick="newMemberLine()"><span class='glyphicon glyphicon-plus-sign'></span></a>
-                  <a><span class='glyphicon glyphicon-minus-sign'></span></a>
+                `<div class="form-group delete" id="tabtr">
+                  教师:<select id="tId${count}" class="teacherList"></select>
+                  描述:<input id="explain${count}" value="${result[i].explain}">
+                  权重:<input id="weight${count}" value="${result[i].weight}">
+                  <a onclick="addLine()"><span class='glyphicon glyphicon-plus-sign'></span></a>
+                  <a onclick="removeLine()"><span class='glyphicon glyphicon-minus-sign'></span></a>
                 </div>`
             )
-            // $.ajax({
-            //   type: "get",
-            //   url: "teacher/allteacher",
-            //   dataType:"json",
-            //   success: function (res) {
-            //     console.log(res);
-            //     let tmp = "";
-            //     res.forEach(item =>{
-            //       if (item.tId == result[i].teacherId){
-            //         tmp += `<option value="${item.tId}" selected>${item.tId}-${item.tName}</option>`
-            //       }else {
-            //         tmp += `<option value="${item.tId}">${item.tId}-${item.tName}</option>`
-            //       }
-            //
-            //     });
-            //     $(".teacherList").html(tmp)
-            //   }
-            // })
+            let tmp = "";
+            _this.teacherList.forEach(item =>{
+              if (result[i].teacherId == item.tId){
+                tmp += `<option selected>${item.tId}-${item.tName}</option>`
+              } else {
+                tmp += `<option>${item.tId}-${item.tName}</option>`
+              }
+            })
+            $(".teacherList").html(tmp)
+
           }
           //获取所有的教师信息
         },
@@ -1065,11 +1081,18 @@
 
     }
 
-    function newMemberLine(){
-      console.log($("input#check_member"))
+    function addLine(){
+      var tr = $("#tabtr");                  //tabtr是你要克隆的表格行的id
+      var newtr = tr.clone();               //克隆tr行
+      newtr.find(":input").each(function(i) {    //循环新克隆的newtr，在里边找到所有的input标签，
+        $(this).val("");                   //给该标签的value赋值为空
+      });
+      tr.after(newtr);           //在id="tabtr"的表格行tr后插入克隆行newtr
+    }
 
-      // $("input#check_member").after(
-      //     $(".teacherList")[0])
+    function removeLine(){
+      var tr = $(".modal-body div:last");
+      tr.remove();
     }
 
     $('#view_Details_Modal').on('hidden.bs.modal', function (e) {
@@ -1327,7 +1350,7 @@
                 _this.projectId = result.projectId;
                 // $("#projectId").val(result.projectId)
                 $("#name").val(result.name);
-                $("#projectYear").val(result.projectYear);
+                $("#projectYear1").val(result.projectYear);
                 $("#itemName").val(result.itemId);
                 $("#startTime").val(time_transform(new Date(result.startTime)));
                 $("#endTime").val(time_transform(new Date(result.endTime)));

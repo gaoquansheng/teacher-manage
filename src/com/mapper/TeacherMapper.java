@@ -22,4 +22,5 @@ public interface TeacherMapper {
     int edit_project(Project project);
     List<Currentyear> getProjectYear();
 
+    int deleteProjectRefuse(int projectId);
 }

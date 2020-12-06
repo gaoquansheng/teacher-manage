@@ -276,6 +276,7 @@ public class RootController {
     @ResponseBody
     @RequestMapping("/teacher_score")
     public String teacher_score(){
+        //
         List <Projectmember> list=rs.teacher_score();
         return JSON.toJSONString(list).toString();
     }

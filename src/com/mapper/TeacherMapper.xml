@@ -28,6 +28,9 @@
 	<update id="edit_project"   parameterType="Project">
 	    	update project SET name=#{name}, projectYear=#{projectYear},itemName=#{itemName},jobDescription=#{jobDescription} ,startTime=#{startTime},endTime=#{endTime}, status = '未审核' WHERE projectId=#{projectId};
 	    </update>
+	<delete id="deleteProjectRefuse" parameterType="int">
+		delete from projectrefuse where projectId = #{projectId}
+	</delete>
 	<!--添加项目成员  -->
 	<insert id="sub_Projectmember"  parameterType="Projectmember">
 	         insert into projectmember (projectId,teacherId,weight,`explain`) values (#{projectId},#{teacherId},#{weight},#{explain})
@@ -38,7 +41,7 @@
 	    </select>
 	<!--查 看季度-->
     <select id="currentYear"  resultType="Currentyear" >
-	    	SELECT * FROM currentYear
+	    	SELECT * FROM currentYear order by projectYear desc
 	    </select>
 
     <!--查 看指标-->
