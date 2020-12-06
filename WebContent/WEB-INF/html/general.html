@@ -495,7 +495,7 @@
 </script>
 <script>
     var cookie = getCookie("user_idno");
-
+    var globalProjectId = null
     //修改密码页面
     function chang_pwd_page() {
       $("#mes").removeClass();
@@ -792,18 +792,27 @@
       // console.log($(""))
       // //这里获取所有的数据了
       // var formData = [];
-      // var t = $("#memberForm").serializeArray();
-      // for (var i = 1;i<t.length;i++){
-      //   let tmp = {};
-      //   tmp.tId = t[i].value;
-      // }
-      // console.log(t)
-      // $.each(t, function() {
-      //   formData[this.name] = this.value;
-      // });
-      // console.log(JSON.stringify(formData));
-      console.log($("#tId1").val())
-      console.log($("#tId2").val())
+      var t = $("#memberForm").serializeArray();
+      console.log(t);
+      var data = [];
+      for (var i = 1; i<t.length; i=i+3){
+          let tmp = {};
+        tmp.teacherId = t[i].value.split("-")[0];
+        tmp.tName = t[i].value.split("-")[1];
+        tmp.explain = t[i+1].value;
+        tmp.weight = t[i+2].value;
+        data.push(tmp);
+      }
+
+      console.log(data);
+      $.ajax({
+          method: "post",
+          url: "teacher/addProjectMembers/"+globalProjectId,
+          data: JSON.stringify(data),
+          contentType: "application/json;charset=utf-8",
+
+      })
+
     }
 
 
@@ -1028,6 +1037,7 @@
       *2019/11/15 16:56
       *todo-bear 这里接后台查看成员的接口
       */
+        globalProjectId = projectId;
       count = 1;
       let teacherList = [];
       let _this = this;
@@ -1052,9 +1062,9 @@
           for (var i = 0; i< result.length;i++){
             $("input#check_member").after(
                 `<div class="form-group delete" id="tabtr">
-                  教师:<select id="tId${count}" class="teacherList"></select>
-                  描述:<input id="explain${count}" value="${result[i].explain}">
-                  权重:<input id="weight${count}" value="${result[i].weight}">
+                  教师:<select name="tID" id="tId${count}" class="teacherList"></select>
+                  描述:<input name="explain" id="explain${count}" value="${result[i].explain}">
+                  权重:<input name="weight" id="weight${count}" value="${result[i].weight}">
                   <a onclick="addLine()"><span class='glyphicon glyphicon-plus-sign'></span></a>
                   <a onclick="removeLine()"><span class='glyphicon glyphicon-minus-sign'></span></a>
                 </div>`
@@ -1087,7 +1097,7 @@
       newtr.find(":input").each(function(i) {    //循环新克隆的newtr，在里边找到所有的input标签，
         $(this).val("");                   //给该标签的value赋值为空
       });
-      tr.after(newtr);           //在id="tabtr"的表格行tr后插入克隆行newtr
+      tr.before(newtr);           //在id="tabtr"的表格行tr后插入克隆行newtr
     }
 
     function removeLine(){

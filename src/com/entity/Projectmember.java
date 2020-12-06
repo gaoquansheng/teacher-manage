@@ -103,9 +103,6 @@ public class Projectmember {
     public void setWeight(float weight) {
         this.weight = weight;
     }
-    public String toString(){
-        return "项目id:"+this.projectId+"老师id"+this.teacherId+"权重："+this.weight;
-    }
 
     public String getSumscore() {
         return sumscore;
@@ -113,5 +110,23 @@ public class Projectmember {
 
     public void setSumscore(String sumscore) {
         this.sumscore = sumscore;
+    }
+
+    @Override
+    public String toString() {
+        return "Projectmember{" +
+                "projectId=" + projectId +
+                ", teacherId='" + teacherId + '\'' +
+                ", score=" + score +
+                ", creator='" + creator + '\'' +
+                ", jobDescription='" + jobDescription + '\'' +
+                ", orderId=" + orderId +
+                ", tName='" + tName + '\'' +
+                ", createTime=" + createTime +
+                ", explain='" + explain + '\'' +
+                ", Proportion=" + Proportion +
+                ", weight=" + weight +
+                ", sumscore='" + sumscore + '\'' +
+                '}';
     }
 }

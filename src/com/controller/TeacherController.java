@@ -7,6 +7,7 @@ import com.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -160,5 +162,13 @@ public class TeacherController {
         List<Currentyear> currentyearList = ts.getProjectYear();
         return JSON.toJSONString(currentyearList);
     }
+
+    @ResponseBody
+    @RequestMapping("/addProjectMembers/{projectId}")
+    public void addProjectMembers(@RequestBody List<Projectmember> projectmembers, @PathVariable("projectId") int projectId ){
+        System.out.println(projectmembers);
+        System.out.println(projectId);
+    }
+
 
 }
